@@ -1,20 +1,40 @@
+'use client';
+
+import { useState } from 'react';
 import {
     PlusIcon,
     FunnelIcon,
     ArrowsUpDownIcon,
     EllipsisVerticalIcon,
     PlayIcon,
-    PauseIcon
+    PauseIcon,
+    XMarkIcon,
+    TrashIcon
 } from '@heroicons/react/24/outline';
-
-const campaigns = [
-    { id: 1, name: 'Growth Hackers Outreach', status: 'Running', leads: 450, opened: '64%', replied: '12%', created: 'Jan 12, 2026' },
-    { id: 2, name: 'Enterprise Sales Q1', status: 'Paused', leads: 1200, opened: '52%', replied: '8%', created: 'Jan 15, 2026' },
-    { id: 3, name: 'Product Launch Beta', status: 'Draft', leads: 0, opened: '0%', replied: '0%', created: 'Feb 1, 2026' },
-    { id: 4, name: 'SEO Agencies Hunt', status: 'Running', leads: 820, opened: '71%', replied: '15%', created: 'Feb 4, 2026' },
-];
+import { useApp } from '@/context/AppContext';
 
 export default function CampaignsPage() {
+    const { campaigns, addCampaign, deleteCampaign, isLoaded } = useApp();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [newCampaignName, setNewCampaignName] = useState('');
+
+    const handleCreate = (e) => {
+        e.preventDefault();
+        if (!newCampaignName.trim()) return;
+
+        addCampaign({
+            name: newCampaignName,
+            created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+        });
+        setNewCampaignName('');
+        setIsModalOpen(false);
+    };
+
+    if (!isLoaded) return <div className="animate-pulse flex space-y-4 flex-col pt-12">
+        <div className="h-10 bg-slate-100 rounded-xl w-48"></div>
+        <div className="h-64 bg-slate-50 rounded-3xl w-full"></div>
+    </div>;
+
     return (
         <div className="space-y-8">
             <div className="flex items-center justify-between">
@@ -22,11 +42,47 @@ export default function CampaignsPage() {
                     <h1 className="text-3xl font-black text-slate-900 tracking-tighter">Campaigns</h1>
                     <p className="text-slate-500 font-medium">Manage and monitor your motion sequences.</p>
                 </div>
-                <button className="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 hover:-translate-y-0.5 active:translate-y-0">
+                <button
+                    onClick={() => setIsModalOpen(true)}
+                    className="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 hover:-translate-y-0.5 active:translate-y-0"
+                >
                     <PlusIcon className="w-5 h-5" />
                     <span>Create Campaign</span>
                 </button>
             </div>
+
+            {/* Campaign Modal */}
+            {isModalOpen && (
+                <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-slate-100 overflow-hidden animate-in fade-in zoom-in duration-200">
+                        <div className="p-6 border-b border-slate-50 flex items-center justify-between">
+                            <h3 className="text-xl font-black text-slate-900">New Campaign</h3>
+                            <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-slate-50 rounded-lg transition-colors">
+                                <XMarkIcon className="w-5 h-5 text-slate-400" />
+                            </button>
+                        </div>
+                        <form onSubmit={handleCreate} className="p-6 space-y-6">
+                            <div>
+                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Campaign Name</label>
+                                <input
+                                    autoFocus
+                                    type="text"
+                                    value={newCampaignName}
+                                    onChange={(e) => setNewCampaignName(e.target.value)}
+                                    placeholder="e.g. Q1 SaaS Founders"
+                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-slate-900 font-bold placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
+                                />
+                            </div>
+                            <button
+                                type="submit"
+                                className="w-full py-4 bg-primary text-white rounded-2xl font-black text-sm hover:shadow-xl hover:shadow-primary/30 transition-all active:scale-[0.98]"
+                            >
+                                Launch Sequence
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            )}
 
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
                 <div className="p-4 bg-slate-50/50 border-b border-slate-100 flex items-center justify-between">
@@ -40,8 +96,8 @@ export default function CampaignsPage() {
                             Sort
                         </button>
                     </div>
-                    <div className="text-xs font-medium text-slate-400">
-                        Showing {campaigns.length} campaigns
+                    <div className="text-xs font-medium text-slate-400 font-black">
+                        {campaigns.length} CAMPAIGNS TOTAL
                     </div>
                 </div>
 
@@ -62,8 +118,8 @@ export default function CampaignsPage() {
                                 <tr key={campaign.id} className="hover:bg-slate-50/80 transition-colors group">
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
-                                            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
-                                                <PlayIcon className="w-4 h-4 text-slate-400" />
+                                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${campaign.status === 'Running' ? 'bg-emerald-50 text-emerald-500' : 'bg-slate-100 text-slate-400'}`}>
+                                                <PlayIcon className="w-4 h-4" />
                                             </div>
                                             <span className="text-sm font-bold text-slate-900 group-hover:text-primary transition-colors cursor-pointer">{campaign.name}</span>
                                         </div>
@@ -73,30 +129,33 @@ export default function CampaignsPage() {
                                             campaign.status === 'Paused' ? 'bg-amber-50 text-amber-600' :
                                                 'bg-slate-100 text-slate-600'
                                             }`}>
-                                            {campaign.status}
+                                            {campaign.status || 'Draft'}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 text-sm font-medium text-slate-600">{campaign.leads}</td>
+                                    <td className="px-6 py-4 text-sm font-black text-slate-600 truncate max-w-[80px]">{campaign.leadsCount || 0}</td>
                                     <td className="px-6 py-4">
                                         <div className="flex gap-4">
                                             <div>
                                                 <p className="text-[10px] font-bold text-slate-400 uppercase">Open</p>
-                                                <p className="text-sm font-bold text-slate-700">{campaign.opened}</p>
+                                                <p className="text-sm font-bold text-slate-700">{campaign.opens || 0}%</p>
                                             </div>
                                             <div>
                                                 <p className="text-[10px] font-bold text-slate-400 uppercase">Reply</p>
-                                                <p className="text-sm font-bold text-slate-700">{campaign.replied}</p>
+                                                <p className="text-sm font-bold text-slate-700">{campaign.replies || 0}%</p>
                                             </div>
                                         </div>
                                     </td>
-                                    <td className="px-6 py-4 text-sm text-slate-500">{campaign.created}</td>
+                                    <td className="px-6 py-4 text-sm font-bold text-slate-400 uppercase italic text-[11px] truncate max-w-[100px]">{campaign.created}</td>
                                     <td className="px-6 py-4 text-right">
-                                        <div className="flex justify-end gap-2">
-                                            <button className="p-1.5 text-slate-400 hover:text-primary hover:bg-white rounded-lg transition-all">
+                                        <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button className="p-1.5 text-slate-400 hover:text-primary hover:bg-white rounded-lg transition-all shadow-sm">
                                                 {campaign.status === 'Running' ? <PauseIcon className="w-5 h-5" /> : <PlayIcon className="w-5 h-5" />}
                                             </button>
-                                            <button className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-white rounded-lg transition-all">
-                                                <EllipsisVerticalIcon className="w-5 h-5" />
+                                            <button
+                                                onClick={() => deleteCampaign(campaign.id)}
+                                                className="p-1.5 text-slate-400 hover:text-alert hover:bg-rose-50 rounded-lg transition-all shadow-sm"
+                                            >
+                                                <TrashIcon className="w-5 h-5" />
                                             </button>
                                         </div>
                                     </td>
@@ -104,6 +163,20 @@ export default function CampaignsPage() {
                             ))}
                         </tbody>
                     </table>
+                    {campaigns.length === 0 && (
+                        <div className="py-20 text-center space-y-4">
+                            <div className="bg-slate-50 w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                                <PlusIcon className="w-10 h-10 text-slate-200" />
+                            </div>
+                            <h3 className="text-xl font-black text-slate-900 tracking-tight italic">No Campaigns active.</h3>
+                            <button
+                                onClick={() => setIsModalOpen(true)}
+                                className="text-primary font-bold hover:underline"
+                            >
+                                Let's build your first sequence
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

@@ -47,13 +47,13 @@ export default function Sidebar() {
       </nav>
 
       <div className="pt-6 border-t border-slate-100">
-        <div className="flex items-center gap-3 px-3 py-3 rounded-2xl bg-slate-50/50">
-          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-xs font-black text-primary border border-primary/20">
+        <div className="flex items-center gap-3 px-3 py-3 rounded-2xl bg-slate-50/50 cursor-pointer hover:bg-slate-100 transition-all duration-300 group/user">
+          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-xs font-black text-primary border border-primary/20 group-hover/user:scale-110 transition-transform">
             JD
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-bold text-slate-900 leading-none">John Doe</span>
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1">Pro Plan</span>
+            <span className="text-sm font-black text-slate-900 leading-none group-hover/user:text-primary transition-colors">John Doe</span>
+            <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest mt-1">Velocity Pro</span>
           </div>
         </div>
       </div>

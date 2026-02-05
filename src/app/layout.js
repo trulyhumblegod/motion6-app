@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import { AppProvider } from "@/context/AppContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,13 +25,15 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
-        <Sidebar />
-        <Header />
-        <main className="pl-[var(--sidebar-width)] pt-16 min-h-screen">
-          <div className="p-8">
-            {children}
-          </div>
-        </main>
+        <AppProvider>
+          <Sidebar />
+          <Header />
+          <main className="pl-[var(--sidebar-width)] pt-16 min-h-screen">
+            <div className="p-8">
+              {children}
+            </div>
+          </main>
+        </AppProvider>
       </body>
     </html>
   );

@@ -7,15 +7,23 @@ import {
     CursorArrowRaysIcon,
     ChatBubbleBottomCenterTextIcon,
 } from '@heroicons/react/24/outline';
-
-const stats = [
-    { name: 'Avg. Open Rate', value: '68.4%', trend: '+5.2%', trendType: 'up' },
-    { name: 'Avg. Reply Rate', value: '22.1%', trend: '+2.4%', trendType: 'up' },
-    { name: 'Total Clicks', value: '12,482', trend: '+12%', trendType: 'up' },
-    { name: 'Bounce Rate', value: '1.2%', trend: '-0.3%', trendType: 'up' },
-];
+import { useApp } from '@/context/AppContext';
 
 export default function Analytics() {
+    const { leads, campaigns, isLoaded } = useApp();
+
+    const stats = [
+        { name: 'Total Leads', value: leads.length.toString(), trend: '+5.2%', trendType: 'up' },
+        { name: 'Active Reach', value: (leads.length * 4.2).toFixed(0), trend: '+2.4%', trendType: 'up' },
+        { name: 'Global Response', value: '22.1%', trend: '+12%', trendType: 'up' },
+        { name: 'Deliverability', value: '99.2%', trend: '-0.3%', trendType: 'up' },
+    ];
+
+    if (!isLoaded) return <div className="animate-pulse space-y-8 pt-12">
+        <div className="h-10 bg-slate-100 rounded-xl w-48"></div>
+        <div className="h-32 bg-slate-50 rounded-3xl w-full"></div>
+    </div>;
+
     return (
         <div className="space-y-8">
             <div>
@@ -26,10 +34,10 @@ export default function Analytics() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {stats.map((stat) => (
                     <div key={stat.name} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
-                        <p className="text-sm font-bold text-slate-500 uppercase tracking-wider">{stat.name}</p>
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{stat.name}</p>
                         <div className="flex items-end justify-between mt-2">
                             <p className="text-3xl font-black text-slate-900 tracking-tight">{stat.value}</p>
-                            <span className={`text-xs font-black px-2 py-1 rounded-lg ${stat.trendType === 'up' ? 'bg-emerald-50 text-emerald-500' : 'bg-rose-50 text-rose-500'
+                            <span className={`text-[10px] font-black px-2 py-1 rounded-lg ${stat.trendType === 'up' ? 'bg-emerald-50 text-emerald-500' : 'bg-rose-50 text-rose-500'
                                 }`}>
                                 {stat.trend}
                             </span>
@@ -41,7 +49,7 @@ export default function Analytics() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                 <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm min-h-[400px]">
                     <div className="flex items-center justify-between mb-8">
-                        <h2 className="text-xl font-black text-slate-900">Campaign Reach</h2>
+                        <h2 className="text-xl font-black text-slate-900 tracking-tight italic">Campaign Reach</h2>
                         <div className="flex gap-4">
                             <div className="flex items-center gap-2">
                                 <div className="w-3 h-3 bg-primary rounded-full" />
@@ -68,13 +76,13 @@ export default function Analytics() {
                 </div>
 
                 <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-                    <h2 className="text-xl font-black text-slate-900 mb-8">Conversion Funnel</h2>
+                    <h2 className="text-xl font-black text-slate-900 mb-8 tracking-tight italic">Conversion Funnel</h2>
                     <div className="space-y-6">
                         {[
-                            { label: 'Sent', value: '12,482', color: 'bg-slate-100', width: 'w-full' },
-                            { label: 'Opened', value: '8,540', color: 'bg-primary/20', width: 'w-[68%]' },
-                            { label: 'Clicked', value: '4,120', color: 'bg-primary/40', width: 'w-[33%]' },
-                            { label: 'Replied', value: '2,750', color: 'bg-primary', width: 'w-[22%]' },
+                            { label: 'Identified', value: leads.length, color: 'bg-slate-100', width: 'w-full' },
+                            { label: 'Outreached', value: Math.floor(leads.length * 0.8), color: 'bg-primary/20', width: 'w-[80%]' },
+                            { label: 'Interacted', value: Math.floor(leads.length * 0.4), color: 'bg-primary/40', width: 'w-[40%]' },
+                            { label: 'Opportunities', value: Math.floor(leads.length * 0.15), color: 'bg-primary', width: 'w-[15%]' },
                         ].map((item) => (
                             <div key={item.label} className="space-y-2">
                                 <div className="flex justify-between items-center text-sm">
@@ -91,7 +99,7 @@ export default function Analytics() {
             </div>
 
             <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
-                <h2 className="text-xl font-black text-slate-900 mb-8">Lead Intelligence</h2>
+                <h2 className="text-xl font-black text-slate-900 mb-8 tracking-tight italic">Lead Intelligence</h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div className="space-y-4">
                         <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest">Top Industries</h4>

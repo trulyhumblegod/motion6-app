@@ -11,12 +11,15 @@ import {
 } from '@heroicons/react/24/outline';
 import { useApp } from '@/context/AppContext';
 
+import { searchApolloLeads } from '@/app/actions/apollo';
+
 export default function LeadFinder({ onImport }) {
     const { apiSettings } = useApp();
     const [query, setQuery] = useState('');
     const [isSearching, setIsSearching] = useState(false);
     const [results, setResults] = useState([]);
     const [hasSearched, setHasSearched] = useState(false);
+    const [usingSimulation, setUsingSimulation] = useState(false);
 
     const handleSearch = async (e) => {
         e.preventDefault();
@@ -25,56 +28,34 @@ export default function LeadFinder({ onImport }) {
         setIsSearching(true);
         setHasSearched(true);
         setResults([]);
+        setUsingSimulation(false);
 
-        if (!apiSettings.apolloKey) {
-            // Fallback to simulation if no key
-            setTimeout(() => {
-                const mockResults = [
-                    { id: `res-${Date.now()}-1`, name: 'David Miller', company: query, email: `david@${query.toLowerCase().replace(/\s/g, '')}.com`, position: 'CTO' },
-                    { id: `res-${Date.now()}-2`, name: 'Emily White', company: query, email: `emily@${query.toLowerCase().replace(/\s/g, '')}.com`, position: 'VP Sales' },
-                    { id: `res-${Date.now()}-3`, name: 'Arjun Gupta', company: query, email: `arjun@${query.toLowerCase().replace(/\s/g, '')}.com`, position: 'Head of Product' },
-                ];
-                setResults(mockResults);
-                setIsSearching(false);
-            }, 1000);
-            return;
-        }
+        // Try Server Action first (uses Env Var or Settings Key)
+        const response = await searchApolloLeads(query, apiSettings.apolloKey);
 
-        try {
-            const response = await fetch('https://api.apollo.io/v1/mixed_people/search', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Cache-Control': 'no-cache',
-                    'X-Api-Key': apiSettings.apolloKey, // Use key from settings
-                },
-                body: JSON.stringify({
-                    q_organization_domains: query,
-                    page: 1,
-                    per_page: 6
-                }),
-            });
-
-            const data = await response.json();
-
-            if (data.people) {
-                const mappedResults = data.people.map(person => ({
-                    id: person.id,
-                    name: `${person.first_name} ${person.last_name}`,
-                    company: person.organization?.name || query,
-                    email: person.email || 'Email no disponible',
-                    position: person.title || 'Desconocido'
-                }));
-                setResults(mappedResults);
-            } else {
-                setResults([]);
-            }
-        } catch (error) {
-            console.error("Apollo Search Error:", error);
-            // Fallback empty or error state could be better, but staying consistent
-            setResults([]);
-        } finally {
+        if (response.success) {
+            setResults(response.people);
             setIsSearching(false);
+        } else {
+            // If missing key or error, fallback to simulation or show error
+            if (response.error === 'missing_key') {
+                console.log("No API Key found (Env or Settings), using simulation.");
+                setUsingSimulation(true);
+                // Fallback to simulation
+                setTimeout(() => {
+                    const mockResults = [
+                        { id: `res-${Date.now()}-1`, name: 'David Miller', company: query, email: `david@${query.toLowerCase().replace(/\s/g, '')}.com`, position: 'CTO' },
+                        { id: `res-${Date.now()}-2`, name: 'Emily White', company: query, email: `emily@${query.toLowerCase().replace(/\s/g, '')}.com`, position: 'VP Sales' },
+                        { id: `res-${Date.now()}-3`, name: 'Arjun Gupta', company: query, email: `arjun@${query.toLowerCase().replace(/\s/g, '')}.com`, position: 'Head of Product' },
+                    ];
+                    setResults(mockResults);
+                    setIsSearching(false);
+                }, 1000);
+            } else {
+                console.error("Apollo Search Failed:", response.details);
+                setResults([]);
+                setIsSearching(false);
+            }
         }
     };
 
@@ -100,7 +81,7 @@ export default function LeadFinder({ onImport }) {
                         {isSearching ? <ArrowPathIcon className="w-5 h-5 animate-spin" /> : 'BUSCAR LEADS'}
                     </button>
                 </form>
-                {!apiSettings.apolloKey && (
+                {usingSimulation && (
                     <p className="text-center mt-4 text-[10px] font-black text-slate-400 uppercase tracking-widest flex items-center justify-center gap-2">
                         <SparklesIcon className="w-3 h-3 text-amber-500" />
                         Corriendo en Motor de Simulación Motion (Modo Demo)

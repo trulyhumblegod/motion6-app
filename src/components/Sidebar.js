@@ -6,15 +6,16 @@ import {
   UserGroupIcon,
   ChartBarIcon,
   Cog6ToothIcon,
-  MagnifyingGlassIcon
+  MagnifyingGlassIcon,
+  SparklesIcon
 } from '@heroicons/react/24/outline';
 
 const navItems = [
   { name: 'Dashboard', href: '/', icon: Squares2X2Icon },
   { name: 'Campaigns', href: '/campaigns', icon: PaperAirplaneIcon },
-  { name: 'Leads', href: '/leads', icon: UserGroupIcon },
+  { name: 'Lead Gen', href: '/leads', icon: MagnifyingGlassIcon },
+  { name: 'AI Lab', href: '/enrichment', icon: SparklesIcon },
   { name: 'Analytics', href: '/analytics', icon: ChartBarIcon },
-  { name: 'Enrichment', href: '/enrichment', icon: MagnifyingGlassIcon },
   { name: 'Settings', href: '/settings', icon: Cog6ToothIcon },
 ];
 

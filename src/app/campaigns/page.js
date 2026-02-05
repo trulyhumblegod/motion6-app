@@ -13,22 +13,11 @@ import {
 } from '@heroicons/react/24/outline';
 import { useApp } from '@/context/AppContext';
 
+import CampaignWizard from '@/components/CampaignWizard';
+
 export default function CampaignsPage() {
-    const { campaigns, addCampaign, deleteCampaign, isLoaded } = useApp();
+    const { campaigns, deleteCampaign, isLoaded } = useApp();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [newCampaignName, setNewCampaignName] = useState('');
-
-    const handleCreate = (e) => {
-        e.preventDefault();
-        if (!newCampaignName.trim()) return;
-
-        addCampaign({
-            name: newCampaignName,
-            created: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-        });
-        setNewCampaignName('');
-        setIsModalOpen(false);
-    };
 
     if (!isLoaded) return <div className="animate-pulse flex space-y-4 flex-col pt-12">
         <div className="h-10 bg-slate-100 rounded-xl w-48"></div>
@@ -39,7 +28,7 @@ export default function CampaignsPage() {
         <div className="space-y-8">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-black text-slate-900 tracking-tighter">Campaigns</h1>
+                    <h1 className="text-3xl font-black text-slate-900 tracking-tighter italic">Campaigns</h1>
                     <p className="text-slate-500 font-medium">Manage and monitor your motion sequences.</p>
                 </div>
                 <button
@@ -51,37 +40,9 @@ export default function CampaignsPage() {
                 </button>
             </div>
 
-            {/* Campaign Modal */}
+            {/* Campaign Wizard Overlay */}
             {isModalOpen && (
-                <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-3xl w-full max-w-md shadow-2xl border border-slate-100 overflow-hidden animate-in fade-in zoom-in duration-200">
-                        <div className="p-6 border-b border-slate-50 flex items-center justify-between">
-                            <h3 className="text-xl font-black text-slate-900">New Campaign</h3>
-                            <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-slate-50 rounded-lg transition-colors">
-                                <XMarkIcon className="w-5 h-5 text-slate-400" />
-                            </button>
-                        </div>
-                        <form onSubmit={handleCreate} className="p-6 space-y-6">
-                            <div>
-                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Campaign Name</label>
-                                <input
-                                    autoFocus
-                                    type="text"
-                                    value={newCampaignName}
-                                    onChange={(e) => setNewCampaignName(e.target.value)}
-                                    placeholder="e.g. Q1 SaaS Founders"
-                                    className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-slate-900 font-bold placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all"
-                                />
-                            </div>
-                            <button
-                                type="submit"
-                                className="w-full py-4 bg-primary text-white rounded-2xl font-black text-sm hover:shadow-xl hover:shadow-primary/30 transition-all active:scale-[0.98]"
-                            >
-                                Launch Sequence
-                            </button>
-                        </form>
-                    </div>
-                </div>
+                <CampaignWizard onClose={() => setIsModalOpen(false)} />
             )}
 
             <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">

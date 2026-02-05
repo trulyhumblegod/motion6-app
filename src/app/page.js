@@ -52,7 +52,7 @@ export default function Dashboard() {
                     className="absolute bottom-0 left-0 right-0 bg-primary rounded-t-lg transition-all duration-500"
                     style={{ height: `${height}%` }}
                   />
-                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                  <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white border border-slate-200 shadow-xl text-slate-800 text-[10px] px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 font-black">
                     {height * 10} emails
                   </div>
                 </div>

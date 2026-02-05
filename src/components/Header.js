@@ -13,7 +13,7 @@ export default function Header() {
                     <MagnifyingGlassIcon className="w-5 h-5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 group-focus-within:text-primary transition-colors duration-200" />
                     <input
                         type="text"
-                        placeholder="Search campaigns, leads or domains..."
+                        placeholder="Buscar campañas, leads o dominios..."
                         className="w-full bg-slate-100 border-none rounded-xl py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all duration-200 outline-none"
                     />
                 </div>
@@ -22,7 +22,7 @@ export default function Header() {
             <div className="flex items-center gap-4">
                 <button className="flex items-center gap-2 bg-primary text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:shadow-lg hover:shadow-primary/30 transition-all duration-300 active:scale-95 group">
                     <PlusIcon className="w-5 h-5 transition-transform group-hover:rotate-90" />
-                    <span>New Campaign</span>
+                    <span>NUEVA CAMPAÑA</span>
                 </button>
 
                 <div className="h-8 w-px bg-slate-200 mx-2" />

@@ -18,23 +18,64 @@ export default function LeadFinder({ onImport }) {
     const [results, setResults] = useState([]);
     const [hasSearched, setHasSearched] = useState(false);
 
-    const handleSearch = (e) => {
+    const handleSearch = async (e) => {
         e.preventDefault();
         if (!query.trim()) return;
 
         setIsSearching(true);
         setHasSearched(true);
+        setResults([]);
 
-        // Simulation of Apollo Search
-        setTimeout(() => {
-            const mockResults = [
-                { id: `res-${Date.now()}-1`, name: 'David Miller', company: query, email: `david@${query.toLowerCase().replace(/\s/g, '')}.com`, position: 'CTO' },
-                { id: `res-${Date.now()}-2`, name: 'Emily White', company: query, email: `emily@${query.toLowerCase().replace(/\s/g, '')}.com`, position: 'VP Sales' },
-                { id: `res-${Date.now()}-3`, name: 'Arjun Gupta', company: query, email: `arjun@${query.toLowerCase().replace(/\s/g, '')}.com`, position: 'Head of Product' },
-            ];
-            setResults(mockResults);
+        if (!apiSettings.apolloKey) {
+            // Fallback to simulation if no key
+            setTimeout(() => {
+                const mockResults = [
+                    { id: `res-${Date.now()}-1`, name: 'David Miller', company: query, email: `david@${query.toLowerCase().replace(/\s/g, '')}.com`, position: 'CTO' },
+                    { id: `res-${Date.now()}-2`, name: 'Emily White', company: query, email: `emily@${query.toLowerCase().replace(/\s/g, '')}.com`, position: 'VP Sales' },
+                    { id: `res-${Date.now()}-3`, name: 'Arjun Gupta', company: query, email: `arjun@${query.toLowerCase().replace(/\s/g, '')}.com`, position: 'Head of Product' },
+                ];
+                setResults(mockResults);
+                setIsSearching(false);
+            }, 1000);
+            return;
+        }
+
+        try {
+            const response = await fetch('https://api.apollo.io/v1/mixed_people/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Cache-Control': 'no-cache',
+                    'X-Api-Key': apiSettings.apolloKey, // Use key from settings
+                },
+                body: JSON.stringify({
+                    q_organization_domains: query,
+                    page: 1,
+                    per_page: 6
+                }),
+            });
+
+            const data = await response.json();
+
+            if (data.people) {
+                const mappedResults = data.people.map(person => ({
+                    id: person.id,
+                    name: `${person.first_name} ${person.last_name}`,
+                    company: person.organization?.name || query,
+                    email: person.email || 'Email no disponible',
+                    position: person.title || 'Desconocido'
+                }));
+                setResults(mappedResults);
+            } else {
+                setResults([]);
+            }
+        } catch (error) {
+            console.error("Apollo Search Error:", error);
+            // Fallback empty or error state could be better, but staying consistent
+            setResults([]);
+        } finally {
             setIsSearching(false);
-        }, 1500);
+        }
     };
 
     return (

@@ -17,6 +17,8 @@ import {
 import SequenceDesigner from './SequenceDesigner';
 import { useApp } from '@/context/AppContext';
 
+import { generateAiSequence } from '@/app/actions/aiHelper';
+
 export default function CampaignWizard({ onClose }) {
     const { addCampaign } = useApp();
     const [step, setStep] = useState(1);
@@ -43,23 +45,25 @@ export default function CampaignWizard({ onClose }) {
         onClose();
     };
 
-    const handleAiGenerate = () => {
+    const handleAiGenerate = async () => {
         setIsGenerating(true);
-        // Mock AI Generation delay
-        setTimeout(() => {
-            setCampaignData(prev => ({
-                ...prev,
-                name: `AI: ${prev.product || 'Outreach'} Expansion`,
-                sequence: [
-                    { id: 1, type: 'linkedin_view', name: 'Profile View', delay: 0 },
-                    { id: 2, type: 'linkedin_connect', name: 'Connection Request', delay: 1 },
-                    { id: 3, type: 'email', name: 'The Hook', delay: 3 },
-                    { id: 4, type: 'email', name: 'The Value Add', delay: 5 },
-                ]
-            }));
+        try {
+            const result = await generateAiSequence(campaignData);
+            if (result.success) {
+                setCampaignData(prev => ({
+                    ...prev,
+                    name: result.data.campaignName,
+                    sequence: result.data.sequence
+                }));
+                setStep(4); // Skip to Sequence Step
+            } else {
+                alert(`AI Failed: ${result.message}`);
+            }
+        } catch (error) {
+            alert('Something went wrong during generation.');
+        } finally {
             setIsGenerating(false);
-            setStep(4); // Skip to Sequence Step
-        }, 2000);
+        }
     };
 
     return (
@@ -282,33 +286,96 @@ export default function CampaignWizard({ onClose }) {
 
                     {/* Step 5: Launch */}
                     {step === 5 && (
-                        <div className="max-w-xl mx-auto space-y-10 text-center py-6">
-                            <div className="w-24 h-24 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <CheckCircleIcon className="w-16 h-16" />
-                            </div>
-                            <h3 className="text-4xl font-black text-slate-900 italic tracking-tight leading-none">Ready for Launch.</h3>
-                            <p className="text-lg text-slate-500 font-medium">Everything is set. Your sequence is built, leads are loaded, and the AI is prepped for motion.</p>
+                        <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                {/* Left Side: Configuration & Summary */}
+                                <div className="space-y-8">
+                                    <div className="bg-slate-900 rounded-[32px] p-8 text-white shadow-2xl shadow-slate-900/20">
+                                        <div className="flex items-center gap-4 mb-8">
+                                            <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
+                                                <RocketLaunchIcon className="w-6 h-6 text-white" />
+                                            </div>
+                                            <div>
+                                                <h3 className="text-2xl font-black italic tracking-tight">Vitals Check</h3>
+                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mt-1">Ready for deployment</p>
+                                            </div>
+                                        </div>
 
-                            <div className="bg-slate-50 p-8 rounded-[32px] text-left space-y-4">
-                                <div className="flex justify-between font-bold">
-                                    <span className="text-slate-400 uppercase text-xs tracking-widest">Campaign</span>
-                                    <span className="text-slate-900">{campaignData.name || 'AI Growth'}</span>
+                                        <div className="space-y-4">
+                                            <div className="flex justify-between items-center py-3 border-b border-white/5">
+                                                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Campaign</span>
+                                                <span className="font-black italic text-primary">{campaignData.name || 'Velocity Alpha'}</span>
+                                            </div>
+                                            <div className="flex justify-between items-center py-3 border-b border-white/5">
+                                                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Prospects</span>
+                                                <span className="font-black">{campaignData.leads.length} Leads</span>
+                                            </div>
+                                            <div className="flex justify-between items-center py-3">
+                                                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Sequence Depth</span>
+                                                <span className="font-black text-emerald-400">{campaignData.sequence.length} Steps</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* Sending Rhythm */}
+                                    <div className="bg-white border-2 border-slate-100 rounded-[32px] p-8 space-y-6">
+                                        <div className="flex items-center justify-between">
+                                            <div>
+                                                <h4 className="text-lg font-black text-slate-900 italic tracking-tight">Rhythm of Motion</h4>
+                                                <p className="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">Sending Limits</p>
+                                            </div>
+                                            <span className="px-3 py-1 bg-primary/5 text-primary text-[10px] font-black uppercase tracking-widest rounded-lg">Optimized</span>
+                                        </div>
+                                        <div className="space-y-4">
+                                            <div className="flex justify-between text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                                <span>Linear Sending</span>
+                                                <span>50 / Day</span>
+                                            </div>
+                                            <input
+                                                type="range"
+                                                className="w-full h-1.5 bg-slate-100 rounded-lg appearance-none cursor-pointer accent-primary"
+                                                min="10"
+                                                max="200"
+                                                defaultValue="50"
+                                            />
+                                            <p className="text-[10px] text-slate-400 font-medium italic">We recommend starting slow to warm up your IP.</p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="flex justify-between font-bold">
-                                    <span className="text-slate-400 uppercase text-xs tracking-widest">Leads</span>
-                                    <span className="text-slate-900">{campaignData.leads.length}</span>
-                                </div>
-                                <div className="flex justify-between font-bold">
-                                    <span className="text-slate-400 uppercase text-xs tracking-widest">Steps</span>
-                                    <span className="text-slate-900 text-primary">{campaignData.sequence.length} (Multi-channel)</span>
+
+                                {/* Right Side: Lead Preview */}
+                                <div className="bg-slate-50 border-2 border-slate-100 rounded-[32px] overflow-hidden flex flex-col">
+                                    <div className="p-6 border-b border-slate-100 bg-white flex items-center justify-between">
+                                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Lead List Preview</span>
+                                        <span className="text-[10px] font-black text-primary uppercase tracking-widest">Verified</span>
+                                    </div>
+                                    <div className="flex-1 overflow-y-auto p-4 space-y-3">
+                                        {campaignData.leads.map((l, i) => (
+                                            <div key={i} className="bg-white p-4 rounded-2xl flex items-center justify-between group">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded-lg bg-slate-50 flex items-center justify-center text-[10px] font-black text-slate-400 uppercase">
+                                                        {l.email[0]}
+                                                    </div>
+                                                    <div>
+                                                        <p className="text-xs font-black text-slate-900 italic">{l.email}</p>
+                                                        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Awaiting First Motion</p>
+                                                    </div>
+                                                </div>
+                                                <div className="w-2 h-2 bg-emerald-400 rounded-full shadow-lg shadow-emerald-400/20" />
+                                            </div>
+                                        ))}
+                                        {campaignData.leads.length === 0 && (
+                                            <div className="py-20 text-center text-slate-300 italic font-medium">No leads selected</div>
+                                        )}
+                                    </div>
                                 </div>
                             </div>
 
                             <button
                                 onClick={handleCreate}
-                                className="w-full py-6 bg-primary text-white rounded-[24px] font-black text-2xl hover:shadow-2xl hover:shadow-primary/30 transition-all active:scale-95"
+                                className="w-full py-6 bg-primary text-white rounded-[32px] font-black text-2xl hover:shadow-2xl hover:shadow-primary/30 transition-all active:scale-95 flex items-center justify-center gap-4"
                             >
-                                START CAMPAIGN NOW
+                                IGNITE MOTION <RocketLaunchIcon className="w-8 h-8" />
                             </button>
                         </div>
                     )}

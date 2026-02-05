@@ -3,17 +3,18 @@ import Link from 'next/link';
 import {
   Squares2X2Icon,
   PaperAirplaneIcon,
-  UserGroupIcon,
+  MagnifyingGlassIcon,
+  SparklesIcon,
+  InboxStackIcon,
   ChartBarIcon,
   Cog6ToothIcon,
-  MagnifyingGlassIcon,
-  SparklesIcon
 } from '@heroicons/react/24/outline';
 
 const navItems = [
   { name: 'Dashboard', href: '/', icon: Squares2X2Icon },
   { name: 'Campaigns', href: '/campaigns', icon: PaperAirplaneIcon },
-  { name: 'Lead Gen', href: '/leads', icon: MagnifyingGlassIcon },
+  { name: 'Inbox', href: '/inbox', icon: InboxStackIcon, badge: '3' },
+  { name: 'Prospecting', href: '/leads', icon: MagnifyingGlassIcon },
   { name: 'AI Lab', href: '/enrichment', icon: SparklesIcon },
   { name: 'Analytics', href: '/analytics', icon: ChartBarIcon },
   { name: 'Settings', href: '/settings', icon: Cog6ToothIcon },
@@ -39,10 +40,17 @@ export default function Sidebar() {
           <Link
             key={item.name}
             href={item.href}
-            className="flex items-center gap-3 px-3 py-3 rounded-xl hover:bg-slate-50 hover:text-primary transition-all duration-200 group"
+            className="flex items-center justify-between px-3 py-3 rounded-xl hover:bg-slate-50 hover:text-primary transition-all duration-200 group relative"
           >
-            <item.icon className="w-6 h-6 text-slate-400 group-hover:text-primary transition-colors" />
-            <span className="font-bold text-sm tracking-tight">{item.name}</span>
+            <div className="flex items-center gap-3">
+              <item.icon className="w-6 h-6 text-slate-400 group-hover:text-primary transition-colors" />
+              <span className="font-bold text-sm tracking-tight">{item.name}</span>
+            </div>
+            {item.badge && (
+              <span className="bg-primary text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center shadow-lg shadow-primary/20">
+                {item.badge}
+              </span>
+            )}
           </Link>
         ))}
       </nav>

@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import {
     EnvelopeIcon,
     UserIcon,
@@ -9,19 +10,25 @@ import {
     TrashIcon,
     DevicePhoneMobileIcon,
     ExclamationCircleIcon,
-    ClockIcon
+    ClockIcon,
+    ArrowsRightLeftIcon,
+    HandThumbUpIcon,
+    BoltIcon
 } from '@heroicons/react/24/outline';
 
 const stepTypes = [
-    { type: 'email', name: 'Email', icon: EnvelopeIcon, color: 'text-blue-500', bg: 'bg-blue-50' },
-    { type: 'linkedin_view', name: 'LinkedIn - View', icon: UserIcon, color: 'text-indigo-500', bg: 'bg-indigo-50' },
-    { type: 'linkedin_connect', name: 'LinkedIn - Connect', icon: PlusIcon, color: 'text-indigo-600', bg: 'bg-indigo-100' },
-    { type: 'linkedin_message', name: 'LinkedIn - Message', icon: ChatBubbleLeftRightIcon, color: 'text-indigo-700', bg: 'bg-indigo-200' },
-    { type: 'call', name: 'Call', icon: PhoneIcon, color: 'text-emerald-500', bg: 'bg-emerald-50' },
-    { type: 'whatsapp', name: 'WhatsApp', icon: DevicePhoneMobileIcon, color: 'text-green-500', bg: 'bg-green-50' },
+    { type: 'email', name: 'Email', icon: EnvelopeIcon, color: 'text-blue-500', bg: 'bg-blue-50', description: 'Personalized cold email' },
+    { type: 'linkedin_view', name: 'LinkedIn - View', icon: UserIcon, color: 'text-indigo-500', bg: 'bg-indigo-50', description: 'Auto-view their profile' },
+    { type: 'linkedin_connect', name: 'LinkedIn - Connect', icon: PlusIcon, color: 'text-indigo-600', bg: 'bg-indigo-100', description: 'Connection request' },
+    { type: 'linkedin_message', name: 'LinkedIn - Message', icon: ChatBubbleLeftRightIcon, color: 'text-indigo-700', bg: 'bg-indigo-200', description: 'LinkedIn DM' },
+    { type: 'linkedin_like', name: 'LinkedIn - Like', icon: HandThumbUpIcon, color: 'text-indigo-400', bg: 'bg-indigo-50', description: 'Auto-like recent post' },
+    { type: 'call', name: 'Call', icon: PhoneIcon, color: 'text-emerald-500', bg: 'bg-emerald-50', description: 'Manual task for caller' },
+    { type: 'whatsapp', name: 'WhatsApp', icon: DevicePhoneMobileIcon, color: 'text-green-500', bg: 'bg-green-50', description: 'Mobile outreach' },
+    { type: 'condition', name: 'If/Else', icon: ArrowsRightLeftIcon, color: 'text-amber-500', bg: 'bg-amber-50', description: 'Branch logic' },
 ];
 
 export default function SequenceDesigner({ sequence, setSequence }) {
+    const [editingStepId, setEditingStepId] = useState(null);
 
     const addStep = (type) => {
         const stepInfo = stepTypes.find(s => s.type === type);
@@ -29,10 +36,13 @@ export default function SequenceDesigner({ sequence, setSequence }) {
             id: Date.now(),
             type,
             name: stepInfo.name,
-            delay: 1, // Default 1 day
+            delay: 1,
+            subject: type === 'email' ? 'Quick question' : '',
+            body: '',
             settings: {}
         };
         setSequence([...sequence, newStep]);
+        setEditingStepId(newStep.id);
     };
 
     const removeStep = (id) => {
@@ -44,88 +54,157 @@ export default function SequenceDesigner({ sequence, setSequence }) {
     };
 
     return (
-        <div className="space-y-6">
+        <div className="space-y-12">
             <div className="flex flex-col items-center">
                 {sequence.map((step, index) => (
                     <div key={step.id} className="w-full flex flex-col items-center group/step">
-                        {/* Delay Node */}
+                        {/* Delay Connector */}
                         {index > 0 && (
-                            <div className="flex flex-col items-center py-4">
-                                <div className="w-0.5 h-8 bg-slate-200" />
-                                <div className="flex items-center gap-2 px-3 py-1 bg-white border border-slate-100 rounded-full shadow-sm text-[10px] font-black text-slate-400 uppercase tracking-widest hover:border-primary/30 transition-all">
-                                    <ClockIcon className="w-3 h-3" />
-                                    Wait
+                            <div className="flex flex-col items-center py-6">
+                                <div className="w-[1.5px] h-12 bg-slate-200" />
+                                <div className="group/delay relative flex items-center gap-3 px-5 py-2.5 bg-white border-2 border-slate-100 rounded-full shadow-lg shadow-slate-200/50 hover:border-primary/40 transition-all">
+                                    <ClockIcon className="w-4 h-4 text-slate-400 group-hover/delay:text-primary transition-colors" />
+                                    <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Wait</span>
                                     <input
                                         type="number"
                                         value={step.delay}
                                         onChange={(e) => updateStep(step.id, { delay: parseInt(e.target.value) || 0 })}
-                                        className="w-8 bg-transparent text-center focus:outline-none text-slate-900"
+                                        className="w-10 bg-slate-50 text-center font-black text-slate-900 rounded-lg py-0.5 outline-none focus:ring-2 focus:ring-primary/20"
                                     />
-                                    Days
+                                    <span className="text-[11px] font-black text-slate-400 uppercase tracking-widest">Days</span>
                                 </div>
-                                <div className="w-0.5 h-8 bg-slate-200" />
+                                <div className="w-[1.5px] h-12 bg-slate-200" />
                             </div>
                         )}
 
                         {/* Step Card */}
-                        <div className="w-full max-w-lg bg-white border border-slate-100 rounded-2xl p-4 shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all relative">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-4">
-                                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${stepTypes.find(s => s.type === step.type)?.bg}`}>
-                                        {(() => {
-                                            const Icon = stepTypes.find(s => s.type === step.type)?.icon || ExclamationCircleIcon;
-                                            return <Icon className={`w-6 h-6 ${stepTypes.find(s => s.type === step.type)?.color}`} />;
-                                        })()}
+                        <div className={`w-full max-w-2xl bg-white border-2 rounded-[32px] transition-all shadow-xl overflow-hidden ${editingStepId === step.id ? 'border-primary shadow-primary/10' : 'border-slate-100 shadow-slate-200/20'}`}>
+                            <div className="p-8">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-6">
+                                        <div className={`w-14 h-14 rounded-2xl flex items-center justify-center shadow-inner ${stepTypes.find(s => s.type === step.type)?.bg}`}>
+                                            {(() => {
+                                                const Icon = stepTypes.find(s => s.type === step.type)?.icon || ExclamationCircleIcon;
+                                                return <Icon className={`w-7 h-7 ${stepTypes.find(s => s.type === step.type)?.color}`} />;
+                                            })()}
+                                        </div>
+                                        <div>
+                                            <div className="flex items-center gap-3">
+                                                <h4 className="text-xl font-black text-slate-900 italic tracking-tight">{step.name}</h4>
+                                                <span className="px-3 py-1 bg-slate-50 rounded-lg text-[10px] font-black text-slate-400 uppercase tracking-widest">Step {index + 1}</span>
+                                            </div>
+                                            <p className="text-xs font-bold text-slate-400 mt-1">{stepTypes.find(s => s.type === step.type)?.description}</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <h4 className="font-black text-slate-900 italic tracking-tight">{step.name}</h4>
-                                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Step {index + 1}</p>
+                                    <div className="flex items-center gap-3">
+                                        <button
+                                            onClick={() => setEditingStepId(editingStepId === step.id ? null : step.id)}
+                                            className="px-4 py-2 bg-slate-50 text-slate-500 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-slate-900 hover:text-white transition-all"
+                                        >
+                                            {editingStepId === step.id ? 'CLOSE' : 'EDIT CONTENT'}
+                                        </button>
+                                        <button
+                                            onClick={() => removeStep(step.id)}
+                                            className="p-3 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all"
+                                        >
+                                            <TrashIcon className="w-5 h-5" />
+                                        </button>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-2">
-                                    <button
-                                        onClick={() => removeStep(step.id)}
-                                        className="p-2 text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all opacity-0 group-hover/step:opacity-100"
-                                    >
-                                        <TrashIcon className="w-5 h-5" />
-                                    </button>
-                                </div>
-                            </div>
 
-                            {/* Step Options Preview */}
-                            <div className="mt-4 pt-4 border-t border-slate-50">
-                                <p className="text-xs text-slate-400 font-medium italic">
-                                    {step.type === 'email' ? 'Subject: {{subject}} • Body: Hi {{firstName}}...' :
-                                        step.type.includes('linkedin') ? 'Automated action via Motion Core' :
-                                            'Manual task generated in inbox'}
-                                </p>
+                                {editingStepId === step.id && (
+                                    <div className="mt-8 pt-8 border-t border-slate-50 space-y-6 animate-in slide-in-from-top-4 duration-300">
+                                        {step.type === 'email' && (
+                                            <div>
+                                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Email Subject</label>
+                                                <input
+                                                    type="text"
+                                                    value={step.subject}
+                                                    onChange={(e) => updateStep(step.id, { subject: e.target.value })}
+                                                    className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl font-bold text-slate-900 outline-none focus:ring-4 focus:ring-primary/10 transition-all"
+                                                    placeholder="Enter subject line..."
+                                                />
+                                            </div>
+                                        )}
+
+                                        {(step.type === 'email' || step.type === 'linkedin_message' || step.type === 'linkedin_connect') && (
+                                            <div>
+                                                <div className="flex justify-between items-center mb-3">
+                                                    <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Message Body</label>
+                                                    <div className="flex gap-2">
+                                                        {['firstName', 'company', 'industry'].map(tag => (
+                                                            <button
+                                                                key={tag}
+                                                                onClick={() => updateStep(step.id, { body: step.body + ` {{${tag}}}` })}
+                                                                className="px-2 py-1 bg-primary/5 text-primary text-[9px] font-black uppercase rounded border border-primary/20 hover:bg-primary hover:text-white transition-all"
+                                                            >
+                                                                + {tag}
+                                                            </button>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                                <textarea
+                                                    rows={6}
+                                                    value={step.body}
+                                                    onChange={(e) => updateStep(step.id, { body: e.target.value })}
+                                                    className="w-full p-6 bg-slate-50 border border-slate-100 rounded-[28px] font-bold text-slate-900 outline-none focus:ring-4 focus:ring-primary/10 transition-all resize-none italic"
+                                                    placeholder="Hi {{firstName}}, I saw what you are doing at {{company}}..."
+                                                />
+                                            </div>
+                                        )}
+
+                                        {step.type === 'condition' && (
+                                            <div className="bg-amber-50 p-6 rounded-2xl border border-amber-100">
+                                                <div className="flex items-center gap-3 mb-4">
+                                                    <BoltIcon className="w-5 h-5 text-amber-500" />
+                                                    <span className="font-black text-amber-700 italic">Branch Logic</span>
+                                                </div>
+                                                <select className="w-full p-4 bg-white border border-amber-200 rounded-xl font-bold text-slate-900 outline-none">
+                                                    <option>If lead replies → Stop sequence</option>
+                                                    <option>If lead opens 3 times → Send high-intent variant</option>
+                                                    <option>If not connected on LinkedIn → Send Email</option>
+                                                </select>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
                 ))}
 
-                {/* Add Step Button Area */}
-                <div className="mt-8 flex flex-col items-center">
-                    <div className="w-0.5 h-6 bg-slate-100 mb-4" />
-                    <div className="flex flex-wrap justify-center gap-2 max-w-xl">
-                        {stepTypes.map((st) => (
-                            <button
-                                key={st.type}
-                                onClick={() => addStep(st.type)}
-                                className="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-100 rounded-xl text-xs font-bold text-slate-600 hover:border-primary/20 hover:text-primary hover:shadow-lg hover:shadow-primary/5 transition-all"
-                            >
-                                <st.icon className="w-4 h-4" />
-                                {st.name.split(' - ').pop()}
-                            </button>
-                        ))}
+                {/* Flow Initiator / Add Step */}
+                <div className="mt-12 group/add flex flex-col items-center">
+                    <div className="w-[1.5px] h-10 bg-slate-100 mb-6 group-hover/add:h-14 group-hover/add:bg-primary/30 transition-all duration-500" />
+
+                    <div className="bg-white p-2 rounded-[32px] border-2 border-slate-100 shadow-2xl flex items-center gap-2 group-hover/add:border-primary/20 transition-all">
+                        <div className="px-6 py-4 bg-slate-900 rounded-[24px] text-white flex items-center gap-3">
+                            <PlusIcon className="w-5 h-5" />
+                            <span className="font-black text-xs uppercase tracking-widest">Add Motion Step</span>
+                        </div>
+                        <div className="flex gap-1 pr-2">
+                            {stepTypes.map((st) => (
+                                <button
+                                    key={st.type}
+                                    title={st.name}
+                                    onClick={() => addStep(st.type)}
+                                    className={`p-3 rounded-[18px] transition-all hover:scale-110 active:scale-90 ${st.bg} ${st.color}`}
+                                >
+                                    <st.icon className="w-5 h-5" />
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>
 
             {sequence.length === 0 && (
-                <div className="py-20 text-center bg-slate-50/50 rounded-[32px] border-2 border-dashed border-slate-200">
-                    <PlusIcon className="w-12 h-12 text-slate-200 mx-auto mb-4" />
-                    <h3 className="text-xl font-bold text-slate-400 italic">Add your first sequence step above</h3>
+                <div className="py-24 text-center bg-slate-50/50 rounded-[48px] border-4 border-dashed border-slate-100 flex flex-col items-center">
+                    <div className="w-20 h-20 bg-white rounded-3xl shadow-xl flex items-center justify-center text-slate-200 mb-6">
+                        <BoltIcon className="w-10 h-10" />
+                    </div>
+                    <h3 className="text-2xl font-black text-slate-300 italic mb-2 tracking-tight">Your motion sequence is empty</h3>
+                    <p className="text-slate-400 font-medium">Add steps above to start automating your outreach.</p>
                 </div>
             )}
         </div>

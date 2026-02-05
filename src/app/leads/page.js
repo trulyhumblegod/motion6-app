@@ -8,14 +8,19 @@ import {
     CircleStackIcon,
     UserPlusIcon,
     SparklesIcon,
-    TrashIcon
+    TrashIcon,
+    DocumentArrowUpIcon,
+    TableCellsIcon,
+    ArrowRightIcon
 } from '@heroicons/react/24/outline';
 
 export default function LeadsPage() {
     const { leads, addLead, deleteLead, isLoaded } = useApp();
     const [activeTab, setActiveTab] = useState('prospecting'); // 'crm' or 'prospecting'
+    const [importSource, setImportSource] = useState('apollo'); // 'apollo', 'csv', 'paste'
     const [searchQuery, setSearchQuery] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [pasteData, setPasteData] = useState('');
     const [newLead, setNewLead] = useState({ name: '', email: '', company: '', position: 'Growth' });
 
     const filteredLeads = leads.filter(lead =>
@@ -35,18 +40,42 @@ export default function LeadsPage() {
         addLead(lead);
     };
 
+    const handlePasteImport = () => {
+        const lines = pasteData.split('\n').filter(l => l.trim() && l.includes('@'));
+        lines.forEach(line => {
+            const email = line.trim();
+            addLead({ name: email.split('@')[0], email, company: 'Imported', position: 'Lead' });
+        });
+        setPasteData('');
+        setActiveTab('crm');
+    };
+
+    const handleCsvSimulate = () => {
+        // Simulate CSV parsing
+        const mockCsvLeads = [
+            { name: 'Sarah Miller', email: 'sarah@stripe.com', company: 'Stripe', position: 'Product Lead' },
+            { name: 'James Wilson', email: 'j.wilson@vercel.com', company: 'Vercel', position: 'CTO' },
+            { name: 'Elena Rodriguez', email: 'elena@airbnb.com', company: 'Airbnb', position: 'Head of Growth' }
+        ];
+        mockCsvLeads.forEach(l => addLead(l));
+        alert('Simulated CSV Import: 3 leads added to CRM.');
+        setActiveTab('crm');
+    };
+
     if (!isLoaded) return <div className="animate-pulse space-y-8 pt-12 max-w-6xl mx-auto">
         <div className="h-10 bg-slate-100 rounded-xl w-48"></div>
         <div className="h-48 bg-slate-50 rounded-[40px] w-full"></div>
     </div>;
 
     return (
-        <div className="space-y-10 max-w-6xl mx-auto pb-20">
+        <div className="space-y-10 max-w-6xl mx-auto pb-20 px-4">
             {/* Header Area */}
-            <div className="flex items-end justify-between">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pt-10">
                 <div>
-                    <h1 className="text-4xl font-black text-slate-900 tracking-tighter italic">Prospecting Workspace</h1>
-                    <p className="text-slate-500 font-medium">Find, enrich, and manage your high-fidelity leads.</p>
+                    <h1 className="text-5xl font-black text-slate-900 tracking-tighter italic leading-none">
+                        PROSPECTING CENTER
+                    </h1>
+                    <p className="text-slate-500 font-medium mt-2">Find, enrich, and manage your high-fidelity leads.</p>
                 </div>
                 <div className="flex bg-slate-100 p-1.5 rounded-[22px] border border-slate-200 shadow-inner">
                     <button
@@ -54,21 +83,115 @@ export default function LeadsPage() {
                         className={`flex items-center gap-2 px-6 py-2.5 rounded-[18px] text-xs font-black uppercase tracking-widest transition-all ${activeTab === 'prospecting' ? 'bg-white text-primary shadow-lg shadow-primary/10' : 'text-slate-400 hover:text-slate-600'}`}
                     >
                         <MagnifyingGlassIcon className="w-4 h-4" />
-                        Find Leads
+                        Capture Leads
                     </button>
                     <button
                         onClick={() => setActiveTab('crm')}
                         className={`flex items-center gap-2 px-6 py-2.5 rounded-[18px] text-xs font-black uppercase tracking-widest transition-all ${activeTab === 'crm' ? 'bg-white text-primary shadow-lg shadow-primary/10' : 'text-slate-400 hover:text-slate-600'}`}
                     >
                         <CircleStackIcon className="w-4 h-4" />
-                        CRM List
+                        CRM Intelligence
                     </button>
+                    <div className="relative flex items-center px-4 ml-2 border-l border-slate-200">
+                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                            {leads.length} SAVED
+                        </span>
+                    </div>
                 </div>
             </div>
 
             {/* Content Tabs */}
             {activeTab === 'prospecting' ? (
-                <LeadFinder onImport={handleImportLead} />
+                <div className="space-y-10 animate-in fade-in duration-500">
+                    {/* Import Source Selector */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <button
+                            onClick={() => setImportSource('apollo')}
+                            className={`p-8 rounded-[32px] border-2 text-left transition-all group ${importSource === 'apollo' ? 'border-primary bg-primary/5 shadow-2xl shadow-primary/10' : 'border-slate-100 bg-white hover:border-slate-200'}`}
+                        >
+                            <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center text-slate-400 group-hover:scale-110 transition-transform mb-6">
+                                <MagnifyingGlassIcon className={`w-7 h-7 ${importSource === 'apollo' ? 'text-primary' : ''}`} />
+                            </div>
+                            <h3 className="text-xl font-black text-slate-900 italic tracking-tight">Apollo Global</h3>
+                            <p className="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">Lead Finder</p>
+                        </button>
+
+                        <button
+                            onClick={() => setImportSource('csv')}
+                            className={`p-8 rounded-[32px] border-2 text-left transition-all group ${importSource === 'csv' ? 'border-primary bg-primary/5 shadow-2xl shadow-primary/10' : 'border-slate-100 bg-white hover:border-slate-200'}`}
+                        >
+                            <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center text-slate-400 group-hover:scale-110 transition-transform mb-6">
+                                <DocumentArrowUpIcon className={`w-7 h-7 ${importSource === 'csv' ? 'text-primary' : ''}`} />
+                            </div>
+                            <h3 className="text-xl font-black text-slate-900 italic tracking-tight">CSV Vault</h3>
+                            <p className="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">File Upload</p>
+                        </button>
+
+                        <button
+                            onClick={() => setImportSource('paste')}
+                            className={`p-8 rounded-[32px] border-2 text-left transition-all group ${importSource === 'paste' ? 'border-primary bg-primary/5 shadow-2xl shadow-primary/10' : 'border-slate-100 bg-white hover:border-slate-200'}`}
+                        >
+                            <div className="w-14 h-14 bg-white rounded-2xl shadow-sm flex items-center justify-center text-slate-400 group-hover:scale-110 transition-transform mb-6">
+                                <TableCellsIcon className={`w-7 h-7 ${importSource === 'paste' ? 'text-primary' : ''}`} />
+                            </div>
+                            <h3 className="text-xl font-black text-slate-900 italic tracking-tight">Direct Injection</h3>
+                            <p className="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">Paste Emails</p>
+                        </button>
+                    </div>
+
+                    {/* Active Source Area */}
+                    <div className="bg-white border-2 border-slate-100 rounded-[40px] p-10 shadow-2xl shadow-slate-200/50">
+                        {importSource === 'apollo' && <LeadFinder onImport={handleImportLead} />}
+
+                        {importSource === 'csv' && (
+                            <div className="py-20 flex flex-col items-center text-center space-y-8">
+                                <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center text-slate-200 animate-bounce">
+                                    <DocumentArrowUpIcon className="w-12 h-12" />
+                                </div>
+                                <div>
+                                    <h3 className="text-3xl font-black text-slate-900 italic tracking-tight">Upload CSV Data</h3>
+                                    <p className="text-slate-500 font-medium max-w-sm mx-auto mt-2">Export from LinkedIn or Apollo and drop it here to ingest into CRM.</p>
+                                </div>
+                                <button
+                                    onClick={handleCsvSimulate}
+                                    className="px-12 py-5 bg-slate-900 text-white rounded-[24px] font-black text-lg hover:bg-primary shadow-xl shadow-primary/20 transition-all active:scale-95"
+                                >
+                                    SELECT FILE
+                                </button>
+                            </div>
+                        )}
+
+                        {importSource === 'paste' && (
+                            <div className="space-y-8">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <h3 className="text-3xl font-black text-slate-900 italic tracking-tight">Direct Injection</h3>
+                                        <p className="text-slate-500 font-medium">Paste a list of emails (one per line) for light-speed import.</p>
+                                    </div>
+                                    <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-200">
+                                        <TableCellsIcon className="w-8 h-8" />
+                                    </div>
+                                </div>
+                                <textarea
+                                    rows={8}
+                                    value={pasteData}
+                                    onChange={(e) => setPasteData(e.target.value)}
+                                    className="w-full p-8 bg-slate-50 border-2 border-slate-100 rounded-[32px] font-bold text-slate-900 outline-none focus:border-primary/30 transition-all placeholder:text-slate-200 text-lg"
+                                    placeholder="alex@example.com&#10;sarah@company.io&#10;..."
+                                />
+                                <div className="flex justify-end">
+                                    <button
+                                        onClick={handlePasteImport}
+                                        disabled={!pasteData.trim()}
+                                        className="inline-flex items-center gap-3 px-10 py-5 bg-primary text-white rounded-[24px] font-black text-lg hover:shadow-2xl hover:shadow-primary/30 transition-all active:scale-95 disabled:opacity-20 translate-y-4"
+                                    >
+                                        INJECT LEADS <ArrowRightIcon className="w-5 h-5" />
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
             ) : (
                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
                     {/* CRM Toolbar */}
@@ -85,10 +208,10 @@ export default function LeadsPage() {
                         </div>
                         <button
                             onClick={() => setIsModalOpen(true)}
-                            className="flex items-center gap-2 bg-primary text-white px-8 py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest hover:shadow-xl hover:shadow-primary/30 hover:-translate-y-0.5 active:translate-y-0 transition-all"
+                            className="flex items-center gap-2 bg-slate-900 text-white px-8 py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest hover:shadow-xl hover:bg-primary transition-all active:scale-95"
                         >
                             <UserPlusIcon className="w-4 h-4" />
-                            Add Prospect
+                            Manual Entry
                         </button>
                     </div>
 
@@ -105,7 +228,7 @@ export default function LeadsPage() {
                                 <div key={lead.id} className="grid grid-cols-12 p-6 items-center hover:bg-slate-50/50 transition-all group">
                                     <div className="col-span-5 flex items-center gap-5">
                                         <div className="w-14 h-14 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-sm font-black text-primary shadow-sm group-hover:scale-110 transition-transform">
-                                            {lead.avatar || lead.name.split(' ').map(n => n[0]).join('')}
+                                            {lead.avatar || lead.name?.split(' ').map(n => n[0]).join('')}
                                         </div>
                                         <div>
                                             <p className="font-black text-slate-900 text-lg italic tracking-tight group-hover:text-primary transition-colors cursor-pointer">{lead.name}</p>
@@ -118,14 +241,14 @@ export default function LeadsPage() {
                                     </div>
                                     <div className="col-span-3">
                                         <p className="text-xs font-bold text-slate-700">{lead.email}</p>
-                                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mt-1">Direct Contact</p>
+                                        <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest mt-1 italic">{lead.icebreaker ? '🧠 Enriched' : 'Direct Contact'}</p>
                                     </div>
                                     <div className="col-span-2">
-                                        <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest ${lead.status === 'Enriched' ? 'bg-amber-50 text-amber-600' :
+                                        <span className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest ${lead.status === 'Enriched' || lead.icebreaker ? 'bg-amber-50 text-amber-600' :
                                             lead.status === 'In Sequence' ? 'bg-emerald-50 text-emerald-600' :
                                                 'bg-slate-100 text-slate-400'
                                             }`}>
-                                            {lead.status || 'New'}
+                                            {lead.icebreaker ? 'Enriched' : (lead.status || 'New')}
                                         </span>
                                     </div>
                                     <div className="col-span-2 flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-all">
@@ -156,11 +279,11 @@ export default function LeadsPage() {
             {/* Simple Add Lead Modal */}
             {isModalOpen && (
                 <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-[32px] w-full max-w-sm p-8 shadow-2xl border border-slate-100 animate-in zoom-in-95 duration-200">
-                        <h3 className="text-2xl font-black text-slate-900 mb-6 italic tracking-tight">Manual Prospect</h3>
+                    <div className="bg-white rounded-[40px] w-full max-w-sm p-10 shadow-2xl border border-slate-100 animate-in zoom-in-95 duration-200">
+                        <h3 className="text-3xl font-black text-slate-900 mb-6 italic tracking-tight">Manual Prospect</h3>
                         <form onSubmit={handleCRMAdd} className="space-y-5">
                             <div>
-                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Full Name</label>
+                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Full Name</label>
                                 <input
                                     required
                                     autoFocus
@@ -168,23 +291,23 @@ export default function LeadsPage() {
                                     value={newLead.name}
                                     onChange={(e) => setNewLead({ ...newLead, name: e.target.value })}
                                     placeholder="e.g. David Miller"
-                                    className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold text-slate-900 outline-none focus:ring-2 focus:ring-primary/20"
+                                    className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl font-bold text-slate-900 outline-none focus:ring-2 focus:ring-primary/20"
                                 />
                             </div>
                             <div>
-                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Email Address</label>
+                                <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Email Address</label>
                                 <input
                                     required
                                     type="email"
                                     value={newLead.email}
                                     onChange={(e) => setNewLead({ ...newLead, email: e.target.value })}
                                     placeholder="david@company.com"
-                                    className="w-full px-5 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold text-slate-900 outline-none focus:ring-2 focus:ring-primary/20"
+                                    className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl font-bold text-slate-900 outline-none focus:ring-2 focus:ring-primary/20"
                                 />
                             </div>
-                            <div className="grid grid-cols-2 gap-4 pt-4">
-                                <button type="button" onClick={() => setIsModalOpen(false)} className="py-4 bg-slate-50 text-slate-500 font-black rounded-2xl text-xs uppercase tracking-widest">Cancel</button>
-                                <button type="submit" className="py-4 bg-primary text-white font-black rounded-2xl text-xs uppercase tracking-widest shadow-lg shadow-primary/20">Secure</button>
+                            <div className="grid grid-cols-2 gap-4 pt-6">
+                                <button type="button" onClick={() => setIsModalOpen(false)} className="py-5 bg-slate-50 text-slate-500 font-black rounded-2xl text-[10px] uppercase tracking-widest">Cancel</button>
+                                <button type="submit" className="py-5 bg-slate-900 text-white font-black rounded-2xl text-[10px] uppercase tracking-widest shadow-lg shadow-slate-900/20">Secure</button>
                             </div>
                         </form>
                     </div>

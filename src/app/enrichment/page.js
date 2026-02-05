@@ -1,13 +1,40 @@
+'use client';
+
+import { useState } from 'react';
 import {
     SparklesIcon,
     BoltIcon,
     CpuChipIcon,
-    FireIcon
+    FireIcon,
+    CheckCircleIcon,
+    XCircleIcon,
+    ArrowPathIcon
 } from '@heroicons/react/24/outline';
+import { testGroqConnection } from '@/app/actions/testApi';
 
 export default function EnrichmentPage() {
+    const [testStatus, setTestStatus] = useState(null); // 'loading', 'success', 'error'
+    const [statusMessage, setStatusMessage] = useState('');
+
+    const runApiTest = async () => {
+        setTestStatus('loading');
+        try {
+            const result = await testGroqConnection();
+            if (result.success) {
+                setTestStatus('success');
+                setStatusMessage('System Online: Groq AI Connected.');
+            } else {
+                setTestStatus('error');
+                setStatusMessage(result.message);
+            }
+        } catch (error) {
+            setTestStatus('error');
+            setStatusMessage('Connection failed: Check Vercel logs.');
+        }
+    };
+
     return (
-        <div className="space-y-8 max-w-5xl mx-auto">
+        <div className="space-y-8 max-w-5xl mx-auto pb-12">
             <div className="text-center space-y-4">
                 <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider">
                     <SparklesIcon className="w-4 h-4" />
@@ -15,6 +42,35 @@ export default function EnrichmentPage() {
                 </div>
                 <h1 className="text-4xl font-black text-slate-900 tracking-tighter">AI Lab</h1>
                 <p className="text-slate-500 text-lg font-medium">Generate hyper-personalized icebreakers at light speed.</p>
+            </div>
+
+            {/* Diagnostic Card */}
+            <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${testStatus === 'success' ? 'bg-emerald-50 text-emerald-500' :
+                            testStatus === 'error' ? 'bg-rose-50 text-rose-500' :
+                                'bg-slate-50 text-slate-400'
+                        }`}>
+                        {testStatus === 'success' ? <CheckCircleIcon className="w-7 h-7" /> :
+                            testStatus === 'error' ? <XCircleIcon className="w-7 h-7" /> :
+                                <CpuChipIcon className="w-7 h-7" />}
+                    </div>
+                    <div>
+                        <h4 className="font-bold text-slate-900">API Connectivity Status</h4>
+                        <p className="text-sm text-slate-500 font-medium">
+                            {testStatus === 'loading' ? 'Verifying system links...' :
+                                statusMessage || 'Integrate your keys to start generating.'}
+                        </p>
+                    </div>
+                </div>
+                <button
+                    onClick={runApiTest}
+                    disabled={testStatus === 'loading'}
+                    className="px-6 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-slate-800 transition-all active:scale-95 flex items-center gap-2 disabled:opacity-50"
+                >
+                    {testStatus === 'loading' && <ArrowPathIcon className="w-4 h-4 animate-spin" />}
+                    Test Connectivity
+                </button>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">

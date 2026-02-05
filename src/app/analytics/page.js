@@ -1,0 +1,145 @@
+'use client';
+
+import {
+    ChartBarIcon,
+    ArrowTrendingUpIcon,
+    UserGroupIcon,
+    CursorArrowRaysIcon,
+    ChatBubbleBottomCenterTextIcon,
+} from '@heroicons/react/24/outline';
+
+const stats = [
+    { name: 'Avg. Open Rate', value: '68.4%', trend: '+5.2%', trendType: 'up' },
+    { name: 'Avg. Reply Rate', value: '22.1%', trend: '+2.4%', trendType: 'up' },
+    { name: 'Total Clicks', value: '12,482', trend: '+12%', trendType: 'up' },
+    { name: 'Bounce Rate', value: '1.2%', trend: '-0.3%', trendType: 'up' },
+];
+
+export default function Analytics() {
+    return (
+        <div className="space-y-8">
+            <div>
+                <h1 className="text-3xl font-black text-slate-900 tracking-tighter">Analytics</h1>
+                <p className="text-slate-500 font-medium">Deep insights into your motion performance.</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {stats.map((stat) => (
+                    <div key={stat.name} className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                        <p className="text-sm font-bold text-slate-500 uppercase tracking-wider">{stat.name}</p>
+                        <div className="flex items-end justify-between mt-2">
+                            <p className="text-3xl font-black text-slate-900 tracking-tight">{stat.value}</p>
+                            <span className={`text-xs font-black px-2 py-1 rounded-lg ${stat.trendType === 'up' ? 'bg-emerald-50 text-emerald-500' : 'bg-rose-50 text-rose-500'
+                                }`}>
+                                {stat.trend}
+                            </span>
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm min-h-[400px]">
+                    <div className="flex items-center justify-between mb-8">
+                        <h2 className="text-xl font-black text-slate-900">Campaign Reach</h2>
+                        <div className="flex gap-4">
+                            <div className="flex items-center gap-2">
+                                <div className="w-3 h-3 bg-primary rounded-full" />
+                                <span className="text-[10px] font-bold text-slate-400 uppercase">Sends</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div className="w-3 h-3 bg-indigo-200 rounded-full" />
+                                <span className="text-[10px] font-bold text-slate-400 uppercase">Opens</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="h-64 flex items-end gap-4 px-2">
+                        {[40, 65, 45, 85, 55, 75, 95].map((val, i) => (
+                            <div key={i} className="flex-1 flex flex-col items-center gap-2">
+                                <div className="w-full flex flex-col-reverse gap-1 h-full">
+                                    <div className="w-full bg-primary rounded-lg transition-all duration-500" style={{ height: `${val}%` }} />
+                                    <div className="w-full bg-indigo-100 rounded-lg transition-all duration-500" style={{ height: `${val * 0.7}%` }} />
+                                </div>
+                                <span className="text-[10px] font-bold text-slate-300 uppercase">{['M', 'T', 'W', 'T', 'F', 'S', 'S'][i]}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+                    <h2 className="text-xl font-black text-slate-900 mb-8">Conversion Funnel</h2>
+                    <div className="space-y-6">
+                        {[
+                            { label: 'Sent', value: '12,482', color: 'bg-slate-100', width: 'w-full' },
+                            { label: 'Opened', value: '8,540', color: 'bg-primary/20', width: 'w-[68%]' },
+                            { label: 'Clicked', value: '4,120', color: 'bg-primary/40', width: 'w-[33%]' },
+                            { label: 'Replied', value: '2,750', color: 'bg-primary', width: 'w-[22%]' },
+                        ].map((item) => (
+                            <div key={item.label} className="space-y-2">
+                                <div className="flex justify-between items-center text-sm">
+                                    <span className="font-bold text-slate-600">{item.label}</span>
+                                    <span className="font-black text-slate-900">{item.value}</span>
+                                </div>
+                                <div className="h-4 w-full bg-slate-50 rounded-full overflow-hidden">
+                                    <div className={`h-full ${item.color} ${item.width} rounded-full transition-all duration-1000`} />
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            <div className="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm">
+                <h2 className="text-xl font-black text-slate-900 mb-8">Lead Intelligence</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="space-y-4">
+                        <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest">Top Industries</h4>
+                        <div className="space-y-3">
+                            {[
+                                { name: 'SaaS', val: '45%' },
+                                { name: 'Fintech', val: '22%' },
+                                { name: 'HealthTech', val: '18%' },
+                            ].map(item => (
+                                <div key={item.name} className="flex items-center justify-between">
+                                    <span className="text-sm font-bold text-slate-700">{item.name}</span>
+                                    <span className="text-sm font-black text-primary">{item.val}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="space-y-4">
+                        <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest">Job Titles</h4>
+                        <div className="space-y-3">
+                            {[
+                                { name: 'Founder/CEO', val: '52%' },
+                                { name: 'Sales Director', val: '31%' },
+                                { name: 'Growth Lead', val: '17%' },
+                            ].map(item => (
+                                <div key={item.name} className="flex items-center justify-between">
+                                    <span className="text-sm font-bold text-slate-700">{item.name}</span>
+                                    <span className="text-sm font-black text-primary">{item.val}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="space-y-4">
+                        <h4 className="text-xs font-black text-slate-400 uppercase tracking-widest">Best Time to Send</h4>
+                        <div className="space-y-3">
+                            {[
+                                { name: 'Tue, 10:00 AM', val: 'High' },
+                                { name: 'Wed, 02:00 PM', val: 'Medium' },
+                                { name: 'Thu, 09:00 AM', val: 'High' },
+                            ].map(item => (
+                                <div key={item.name} className="flex items-center justify-between">
+                                    <span className="text-sm font-bold text-slate-700">{item.name}</span>
+                                    <span className="px-2 py-0.5 bg-emerald-50 text-emerald-500 text-[10px] font-black rounded-lg">{item.val}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}

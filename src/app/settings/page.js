@@ -47,8 +47,8 @@ export default function SettingsPage() {
     return (
         <div className="space-y-12 max-w-4xl mx-auto pb-20">
             <div>
-                <h1 className="text-3xl font-black text-slate-900 tracking-tighter italic">Settings</h1>
-                <p className="text-slate-500 font-medium">Configure your outreach engine and identity.</p>
+                <h1 className="text-3xl font-black text-slate-900 tracking-tighter italic">Configuración</h1>
+                <p className="text-slate-500 font-medium">Configura tu motor de alcance e identidad.</p>
             </div>
 
             {/* API Keys Section */}
@@ -58,24 +58,24 @@ export default function SettingsPage() {
                         <KeyIcon className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                        <h2 className="text-xl font-bold text-slate-900">API Infrastructure</h2>
-                        <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Global Keys</p>
+                        <h2 className="text-xl font-bold text-slate-900">Infraestructura API</h2>
+                        <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Claves Globales</p>
                     </div>
                 </div>
                 <form onSubmit={handleSaveSettings} className="p-8 space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Apollo API Key</label>
+                            <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Clave API Apollo</label>
                             <input
                                 type="password"
                                 value={localSettings.apolloKey}
                                 onChange={(e) => setLocalSettings({ ...localSettings, apolloKey: e.target.value })}
-                                placeholder="your_apollo_key"
+                                placeholder="tu_clave_apollo"
                                 className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold text-slate-900 outline-none focus:ring-2 focus:ring-primary/20 transition-all font-mono text-sm"
                             />
                         </div>
                         <div>
-                            <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Groq API Key</label>
+                            <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Clave API Groq</label>
                             <input
                                 type="password"
                                 value={localSettings.groqKey}
@@ -85,7 +85,7 @@ export default function SettingsPage() {
                             />
                         </div>
                         <div className="md:col-span-2">
-                            <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Resend API Key</label>
+                            <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Clave API Resend</label>
                             <input
                                 type="password"
                                 value={localSettings.resendKey}
@@ -100,7 +100,7 @@ export default function SettingsPage() {
                             {showSavedMsg && (
                                 <span className="text-emerald-500 text-sm font-bold flex items-center gap-1 animate-in fade-in slide-in-from-left-2">
                                     <CheckCircleIcon className="w-4 h-4" />
-                                    Settings persistent!
+                                    ¡Configuración guardada!
                                 </span>
                             )}
                         </div>
@@ -109,7 +109,7 @@ export default function SettingsPage() {
                             disabled={isSaving}
                             className="px-8 py-3 bg-primary text-white rounded-2xl font-black text-sm hover:shadow-xl hover:shadow-primary/30 transition-all active:scale-95 disabled:opacity-50"
                         >
-                            {isSaving ? 'UPDATING...' : 'SAVE CONFIGURATION'}
+                            {isSaving ? 'ACTUALIZANDO...' : 'GUARDAR CONFIGURACIÓN'}
                         </button>
                     </div>
                 </form>
@@ -123,8 +123,8 @@ export default function SettingsPage() {
                             <UserCircleIcon className="w-6 h-6 text-emerald-500" />
                         </div>
                         <div>
-                            <h2 className="text-xl font-bold text-slate-900">Sender Profiles</h2>
-                            <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Outbound Identities</p>
+                            <h2 className="text-xl font-bold text-slate-900">Perfiles de Envío</h2>
+                            <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">Identidades de Salida</p>
                         </div>
                     </div>
                     <button
@@ -132,7 +132,7 @@ export default function SettingsPage() {
                         className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800 transition-all"
                     >
                         <PlusIcon className="w-4 h-4" />
-                        ADD PROFILE
+                        AÑADIR PERFIL
                     </button>
                 </div>
                 <div className="divide-y divide-slate-50">
@@ -149,7 +149,7 @@ export default function SettingsPage() {
                             </div>
                             <div className="flex items-center gap-4">
                                 {profile.default && (
-                                    <span className="text-[10px] font-black bg-emerald-100 text-emerald-600 px-2 py-1 rounded-lg uppercase tracking-widest">Default</span>
+                                    <span className="text-[10px] font-black bg-emerald-100 text-emerald-600 px-2 py-1 rounded-lg uppercase tracking-widest">Predeterminado</span>
                                 )}
                                 <button className="p-2 text-slate-300 hover:text-rose-500 transition-colors opacity-0 group-hover:opacity-100">
                                     <TrashIcon className="w-5 h-5" />
@@ -160,7 +160,7 @@ export default function SettingsPage() {
                     {senderProfiles.length === 0 && (
                         <div className="p-12 text-center">
                             <EnvelopeIcon className="w-12 h-12 text-slate-100 mx-auto mb-4" />
-                            <p className="text-slate-400 font-bold italic">No sender profiles configured.</p>
+                            <p className="text-slate-400 font-bold italic">No hay perfiles configurados.</p>
                         </div>
                     )}
                 </div>
@@ -170,37 +170,37 @@ export default function SettingsPage() {
             {showProfileModal && (
                 <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
                     <div className="bg-white rounded-[32px] w-full max-w-md p-8 shadow-2xl border border-slate-100 animate-in zoom-in-95 duration-200">
-                        <h3 className="text-2xl font-black text-slate-900 mb-6 italic tracking-tight">New Global Identity</h3>
+                        <h3 className="text-2xl font-black text-slate-900 mb-6 italic tracking-tight">Nueva Identidad Global</h3>
                         <form onSubmit={handleAddProfile} className="space-y-6">
                             <div>
-                                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Display Name</label>
+                                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Nombre Visible</label>
                                 <input
                                     required
                                     type="text"
                                     value={newProfile.name}
                                     onChange={(e) => setNewProfile({ ...newProfile, name: e.target.value })}
-                                    placeholder="e.g. John Doe"
+                                    placeholder="ej. Juan Pérez"
                                     className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold text-slate-900 outline-none focus:ring-2 focus:ring-primary/20"
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Email Address</label>
+                                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Correo Electrónico</label>
                                 <input
                                     required
                                     type="email"
                                     value={newProfile.email}
                                     onChange={(e) => setNewProfile({ ...newProfile, email: e.target.value })}
-                                    placeholder="john@company.com"
+                                    placeholder="juan@empresa.com"
                                     className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold text-slate-900 outline-none focus:ring-2 focus:ring-primary/20"
                                 />
                             </div>
                             <div>
-                                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Signature</label>
+                                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2">Firma</label>
                                 <textarea
                                     rows={3}
                                     value={newProfile.signature}
                                     onChange={(e) => setNewProfile({ ...newProfile, signature: e.target.value })}
-                                    placeholder="Best regards, John"
+                                    placeholder="Saludos, Juan"
                                     className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl font-bold text-slate-900 outline-none focus:ring-2 focus:ring-primary/20 resize-none"
                                 />
                             </div>
@@ -210,13 +210,13 @@ export default function SettingsPage() {
                                     onClick={() => setShowProfileModal(false)}
                                     className="flex-1 py-4 bg-slate-50 text-slate-500 font-bold rounded-2xl hover:bg-slate-100 transition-all"
                                 >
-                                    Cancel
+                                    Cancelar
                                 </button>
                                 <button
                                     type="submit"
                                     className="flex-1 py-4 bg-primary text-white font-black rounded-2xl hover:shadow-xl hover:shadow-primary/30 transition-all active:scale-95"
                                 >
-                                    Add Profile
+                                    Añadir Perfil
                                 </button>
                             </div>
                         </form>

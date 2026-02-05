@@ -32,15 +32,15 @@ export default function CampaignsPage() {
         <div className="space-y-12 pb-20">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-6xl font-black text-slate-900 tracking-tighter italic leading-none">WAVES</h1>
-                    <p className="text-slate-500 font-medium text-lg mt-3">Active motion sequences and deployment logs.</p>
+                    <h1 className="text-6xl font-black text-slate-900 tracking-tighter italic leading-none">CAMPAÑAS</h1>
+                    <p className="text-slate-500 font-medium text-lg mt-3">Secuencias activas y registros de despliegue.</p>
                 </div>
                 <button
                     onClick={() => setIsModalOpen(true)}
-                    className="flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-[20px] font-black text-xs uppercase tracking-widest shadow-2xl shadow-primary/20 hover:-translate-y-1 transition-all active:scale-95"
+                    className="flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-[20px] font-black text-xs uppercase tracking-widest shadow-2xl shadow-primary/20 hover:-translate-y-1 transition-all active:scale-95 z-10 relative"
                 >
                     <PlusIcon className="w-6 h-6" />
-                    <span>LAUNCH NEW WAVE</span>
+                    <span>NUEVA CAMPAÑA</span>
                 </button>
             </div>
 
@@ -54,15 +54,15 @@ export default function CampaignsPage() {
                     <div className="flex gap-4">
                         <button className="flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary transition-all">
                             <FunnelIcon className="w-4 h-4" />
-                            Filter
+                            Filtrar
                         </button>
                         <button className="flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 rounded-xl text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-primary transition-all">
                             <ArrowsUpDownIcon className="w-4 h-4" />
-                            Sort
+                            Ordenar
                         </button>
                     </div>
                     <div className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] px-6">
-                        {campaigns.length} OPERATIONAL WAVES
+                        {campaigns.length} CAMPAÑAS OPERATIVAS
                     </div>
                 </div>
 
@@ -70,11 +70,11 @@ export default function CampaignsPage() {
                     <table className="w-full text-left">
                         <thead>
                             <tr className="bg-slate-50/30 text-[10px] font-black text-slate-400 uppercase tracking-widest px-8">
-                                <th className="px-10 py-6">Wave Identifier</th>
-                                <th className="px-10 py-6">Status</th>
-                                <th className="px-10 py-6">Force</th>
-                                <th className="px-10 py-6">Resonance</th>
-                                <th className="px-10 py-6 text-right">Actions</th>
+                                <th className="px-10 py-6">Nombre de Campaña</th>
+                                <th className="px-10 py-6">Estado</th>
+                                <th className="px-10 py-6">Prospectos</th>
+                                <th className="px-10 py-6">Resonancia</th>
+                                <th className="px-10 py-6 text-right">Acciones</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-50">
@@ -96,23 +96,23 @@ export default function CampaignsPage() {
                                             campaign.status === 'Paused' ? 'bg-amber-50 text-amber-600' :
                                                 'bg-slate-100 text-slate-600'
                                             }`}>
-                                            {campaign.status || 'Draft'}
+                                            {campaign.status || 'Borrador'}
                                         </span>
                                     </td>
                                     <td className="px-10 py-8">
                                         <div className="flex flex-col">
                                             <span className="text-lg font-black text-slate-900 italic leading-none">{campaign.leadsCount || 0}</span>
-                                            <span className="text-[9px] font-black text-slate-400 uppercase tracking-tighter mt-1">LEADS LOADED</span>
+                                            <span className="text-[9px] font-black text-slate-400 uppercase tracking-tighter mt-1">PROSPECTOS</span>
                                         </div>
                                     </td>
                                     <td className="px-10 py-8">
                                         <div className="flex gap-8">
                                             <div>
-                                                <p className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">OPEN</p>
+                                                <p className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">APERTURA</p>
                                                 <p className="text-xl font-black text-slate-900 italic">{campaign.opens || 0}%</p>
                                             </div>
                                             <div>
-                                                <p className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">REPLY</p>
+                                                <p className="text-[9px] font-black text-slate-400 uppercase tracking-tighter">RESPUESTA</p>
                                                 <p className="text-xl font-black text-slate-900 italic">{campaign.replies || 0}%</p>
                                             </div>
                                         </div>
@@ -139,12 +139,12 @@ export default function CampaignsPage() {
                             <div className="w-24 h-24 bg-slate-50 rounded-[40px] flex items-center justify-center mx-auto mb-8 text-slate-200">
                                 <RocketLaunchIcon className="w-12 h-12" />
                             </div>
-                            <h3 className="text-3xl font-black text-slate-900 italic tracking-tight italic">No waves detected in the system.</h3>
+                            <h3 className="text-3xl font-black text-slate-900 italic tracking-tight italic">No se detectaron campañas.</h3>
                             <button
                                 onClick={() => setIsModalOpen(true)}
                                 className="mt-6 text-primary font-black uppercase tracking-widest text-xs hover:underline flex items-center gap-2 mx-auto"
                             >
-                                INITIATE FIRST SEQUENCE <ArrowRightIcon className="w-4 h-4" />
+                                INICIAR PRIMERA SECUENCIA <ArrowRightIcon className="w-4 h-4" />
                             </button>
                         </div>
                     )}

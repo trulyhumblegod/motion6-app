@@ -19,10 +19,10 @@ export default function Dashboard() {
   const { leads, campaigns, isLoaded } = useApp();
 
   const stats = [
-    { name: 'Motion Force', value: leads.length.toString(), trend: '+12%', trendType: 'up', icon: UserPlusIcon },
-    { name: 'Active Waves', value: campaigns.length.toString(), trend: '+3', trendType: 'up', icon: RocketLaunchIcon },
-    { name: 'AI Resonance', value: '98%', trend: 'OPTIMAL', trendType: 'up', icon: SparklesIcon },
-    { name: 'Conversion Puls', value: '14.2%', trend: '5.1%', trendType: 'up', icon: ChatBubbleLeftRightIcon },
+    { name: 'Total Prospectos', value: leads.length.toString(), trend: '+12%', trendType: 'up', icon: UserPlusIcon },
+    { name: 'Campañas Activas', value: campaigns.length.toString(), trend: '+3', trendType: 'up', icon: RocketLaunchIcon },
+    { name: 'Créditos IA', value: '450', trend: 'ÓPTIMO', trendType: 'up', icon: SparklesIcon },
+    { name: 'Tasa Respuesta', value: '14.2%', trend: '5.1%', trendType: 'up', icon: ChatBubbleLeftRightIcon },
   ];
 
   if (!isLoaded) return (
@@ -42,11 +42,11 @@ export default function Dashboard() {
     <div className="space-y-12 pb-20">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <h1 className="text-6xl font-black text-slate-900 tracking-tighter italic leading-none">COMMAND CENTER</h1>
-          <p className="text-slate-500 font-medium text-lg mt-3">Welcome back. Your outreach ecosystem is at peak performance.</p>
+          <h1 className="text-6xl font-black text-slate-900 tracking-tighter italic leading-none">CENTRO DE MANDO</h1>
+          <p className="text-slate-500 font-medium text-lg mt-3">Bienvenido. Tu ecosistema de ventas está operativo.</p>
         </div>
         <Link href="/campaigns" className="bg-slate-900 text-white px-8 py-4 rounded-[20px] font-black text-xs uppercase tracking-widest shadow-2xl shadow-slate-900/20 hover:-translate-y-1 transition-all active:scale-95 flex items-center gap-3">
-          INITIATE MOTION <ArrowRightIcon className="w-5 h-5" />
+          INICIAR CAMPAÑA <ArrowRightIcon className="w-5 h-5" />
         </Link>
       </div>
 
@@ -72,12 +72,12 @@ export default function Dashboard() {
           <div className="bg-white p-10 rounded-[48px] border-2 border-slate-50 shadow-2xl shadow-slate-200/30">
             <div className="flex items-center justify-between mb-10">
               <div>
-                <h3 className="text-2xl font-black text-slate-900 italic tracking-tight">Outreach Velocity</h3>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Activity over last 7 days</p>
+                <h3 className="text-2xl font-black text-slate-900 italic tracking-tight">Velocidad de Salida</h3>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-1">Actividad últimos 7 días</p>
               </div>
               <div className="flex gap-2 bg-slate-50 p-1.5 rounded-2xl border border-slate-100">
-                <button className="px-5 py-2 bg-white text-primary text-[10px] font-black uppercase tracking-widest rounded-xl shadow-sm">VOLUME</button>
-                <button className="px-5 py-2 text-slate-400 text-[10px] font-black uppercase tracking-widest rounded-xl hover:text-slate-600">INTENT</button>
+                <button className="px-5 py-2 bg-white text-primary text-[10px] font-black uppercase tracking-widest rounded-xl shadow-sm">VOLUMEN</button>
+                <button className="px-5 py-2 text-slate-400 text-[10px] font-black uppercase tracking-widest rounded-xl hover:text-slate-600">INTENCIÓN</button>
               </div>
             </div>
             <div className="h-80 flex items-end gap-4 px-2 pb-2">
@@ -92,7 +92,7 @@ export default function Dashboard() {
               ))}
             </div>
             <div className="flex justify-between mt-6 px-4">
-              {['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'].map(day => (
+              {['LUN', 'MAR', 'MIE', 'JUE', 'VIE', 'SAB', 'DOM'].map(day => (
                 <span key={day} className="text-[10px] font-black text-slate-300 tracking-widest">{day}</span>
               ))}
             </div>
@@ -100,7 +100,7 @@ export default function Dashboard() {
 
           <div className="bg-white rounded-[48px] border-2 border-slate-50 shadow-2xl shadow-slate-200/30 overflow-hidden">
             <div className="p-10 border-b border-slate-50 flex items-center justify-between">
-              <h3 className="text-2xl font-black text-slate-900 italic tracking-tight">Live Campaigns</h3>
+              <h3 className="text-2xl font-black text-slate-900 italic tracking-tight">Campañas en Curso</h3>
               <Link href="/campaigns" className="bg-slate-50 text-slate-400 hover:text-primary p-3 rounded-2xl transition-all">
                 <ArrowRightIcon className="w-5 h-5" />
               </Link>
@@ -114,13 +114,13 @@ export default function Dashboard() {
                     </div>
                     <div>
                       <h4 className="text-xl font-black text-slate-900 italic tracking-tight">{campaign.name}</h4>
-                      <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">{campaign.status} • {campaign.leadsCount || 0} TOTAL LEADS</p>
+                      <p className="text-xs text-slate-400 font-bold uppercase tracking-widest mt-1">{campaign.status} • {campaign.leadsCount || 0} PROSPECTOS</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-10">
                     <div className="text-right">
                       <p className="text-2xl font-black text-emerald-500 italic leading-none">{campaign.opens || 24}%</p>
-                      <p className="text-[9px] text-slate-300 font-black uppercase tracking-tighter mt-1">OPEN RATE</p>
+                      <p className="text-[9px] text-slate-300 font-black uppercase tracking-tighter mt-1">APERTURA</p>
                     </div>
                     <button className="w-12 h-12 flex items-center justify-center bg-white border border-slate-100 text-slate-300 rounded-xl hover:text-slate-900 hover:shadow-lg transition-all">
                       <EllipsisHorizontalIcon className="w-6 h-6" />
@@ -133,7 +133,7 @@ export default function Dashboard() {
                   <div className="w-20 h-20 bg-slate-50 rounded-3xl flex items-center justify-center text-slate-200 mx-auto mb-6">
                     <BoltIcon className="w-10 h-10" />
                   </div>
-                  <p className="text-xl text-slate-400 font-black italic">No energy in the system. Start a campaign.</p>
+                  <p className="text-xl text-slate-400 font-black italic">Sin energía en el sistema. Inicia una campaña.</p>
                 </div>
               )}
             </div>
@@ -142,7 +142,7 @@ export default function Dashboard() {
 
         <div className="space-y-10">
           <div className="bg-white p-10 rounded-[48px] border-2 border-slate-50 shadow-2xl shadow-slate-200/30">
-            <h3 className="text-2xl font-black text-slate-900 italic tracking-tight mb-8">Signal Stream</h3>
+            <h3 className="text-2xl font-black text-slate-900 italic tracking-tight mb-8">Señales en Vivo</h3>
             <div className="space-y-8">
               {leads.slice(0, 5).map((lead) => (
                 <div key={lead.id} className="flex gap-4 group cursor-pointer">
@@ -159,7 +159,7 @@ export default function Dashboard() {
                       <span className="group-hover:text-primary transition-colors cursor-pointer">{lead.name}</span>
                     </p>
                     <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mt-0.5">{lead.company}</p>
-                    <p className="text-[9px] text-primary font-black uppercase tracking-tighter mt-1">ENRICHMENT DETECTED</p>
+                    <p className="text-[9px] text-primary font-black uppercase tracking-tighter mt-1">DETECTADO</p>
                   </div>
                 </div>
               ))}
@@ -171,11 +171,11 @@ export default function Dashboard() {
               <SparklesIcon className="w-12 h-12 text-primary/20 group-hover:text-primary/40 transition-colors" />
             </div>
             <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-primary/10 rounded-full blur-[80px]" />
-            <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-4 block">PREMIUM TIER</span>
+            <span className="text-[10px] font-black text-primary uppercase tracking-[0.3em] mb-4 block">NIVEL PRO</span>
             <h3 className="font-black text-3xl mb-4 relative z-10 italic tracking-tighter leading-none">VELOCITY PRO</h3>
-            <p className="text-slate-400 text-sm mb-8 relative z-10 font-medium leading-relaxed">Scale your motion to 10k prospects/mo and unlock deep-fake AI personalization.</p>
+            <p className="text-slate-400 text-sm mb-8 relative z-10 font-medium leading-relaxed">Escala a 10k prospectos/mes y desbloquea personalización por IA.</p>
             <button className="w-full py-5 bg-white text-slate-900 font-black rounded-2xl text-xs uppercase tracking-widest relative z-10 hover:shadow-2xl hover:shadow-white/10 hover:-translate-y-1 transition-all active:scale-95">
-              UPGRADE ACCOUNT
+              MEJORAR CUENTA
             </button>
           </div>
         </div>

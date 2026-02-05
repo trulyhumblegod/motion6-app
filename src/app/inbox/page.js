@@ -22,8 +22,8 @@ const mockMessages = [
         leadName: 'Alex Rivera',
         company: 'NextGen SaaS',
         channel: 'email',
-        subject: 'Re: Quick question about growth',
-        preview: 'Thanks for reaching out! I would love to see a demo next week...',
+        subject: 'Re: Pregunta rápida sobre crecimiento',
+        preview: '¡Gracias por contactar! Me encantaría ver una demo la próxima semana...',
         time: '14:20',
         unread: true,
         avatar: 'AR',
@@ -34,8 +34,8 @@ const mockMessages = [
         leadName: 'Sarah Chen',
         company: 'Flow State',
         channel: 'linkedin',
-        subject: 'LinkedIn Message',
-        preview: 'Your profile popped up in my feed. Interesting work you are doing.',
+        subject: 'Mensaje LinkedIn',
+        preview: 'Tu perfil apareció en mi feed. Interesante trabajo el que están haciendo.',
         time: '10:05',
         unread: false,
         avatar: 'SC',
@@ -46,9 +46,9 @@ const mockMessages = [
         leadName: 'David Miller',
         company: 'Scale Ops',
         channel: 'whatsapp',
-        subject: 'WhatsApp Chat',
-        preview: 'Can we move our call to 3pm instead?',
-        time: 'Yesterday',
+        subject: 'Chat WhatsApp',
+        preview: '¿Podemos mover nuestra llamada a las 3pm en su lugar?',
+        time: 'Ayer',
         unread: false,
         avatar: 'DM',
         status: 'pending'
@@ -66,19 +66,19 @@ export default function InboxPage() {
             <div className="w-1/3 border-r border-slate-100 flex flex-col bg-slate-50/30">
                 <div className="p-6 space-y-4">
                     <div className="flex items-center justify-between">
-                        <h1 className="text-3xl font-black text-slate-900 italic tracking-tight">Focus Inbox</h1>
-                        <span className="bg-primary text-white text-[10px] font-black px-2 py-1 rounded-lg">3 NEW</span>
+                        <h1 className="text-3xl font-black text-slate-900 italic tracking-tight">Bandeja Prioritaria</h1>
+                        <span className="bg-primary text-white text-[10px] font-black px-2 py-1 rounded-lg">3 NUEVOS</span>
                     </div>
                     <div className="relative group">
                         <MagnifyingGlassIcon className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
                         <input
                             type="text"
-                            placeholder="Filter by lead or company..."
+                            placeholder="Filtrar por lead o empresa..."
                             className="w-full bg-white border border-slate-200 rounded-xl py-2.5 pl-10 pr-4 text-xs font-bold outline-none focus:ring-4 focus:ring-primary/10 transition-all"
                         />
                     </div>
                     <div className="flex gap-2">
-                        {['All', 'Email', 'LinkedIn', 'WhatsApp'].map(t => (
+                        {['Todos', 'Email', 'LinkedIn', 'WhatsApp'].map(t => (
                             <button key={t} className="px-3 py-1.5 bg-white border border-slate-100 rounded-lg text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-primary transition-all">
                                 {t}
                             </button>
@@ -134,7 +134,7 @@ export default function InboxPage() {
                                     <div className="flex items-center gap-2">
                                         <span className="text-xs font-bold text-slate-400">{selectedThread.company}</span>
                                         <div className="w-1 h-1 bg-slate-300 rounded-full" />
-                                        <button className="text-[10px] font-black text-primary uppercase tracking-widest hover:underline">View CRM Profile</button>
+                                        <button className="text-[10px] font-black text-primary uppercase tracking-widest hover:underline">Ver Perfil CRM</button>
                                     </div>
                                 </div>
                             </div>
@@ -143,7 +143,7 @@ export default function InboxPage() {
                                     <CheckCircleIcon className="w-6 h-6" />
                                 </button>
                                 <button className="p-2.5 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all font-black text-[10px] uppercase tracking-widest px-4">
-                                    Pause Sequence
+                                    Pausar Secuencia
                                 </button>
                             </div>
                         </div>
@@ -169,10 +169,10 @@ export default function InboxPage() {
                                 <div className="space-y-2 text-right">
                                     <div className="bg-slate-900 text-white p-6 rounded-[24px] rounded-tr-none shadow-xl">
                                         <p className="text-sm font-medium leading-relaxed">
-                                            Hi {selectedThread.leadName}, thanks for getting back to me! I would love to show you how we can automate your motion sequences. Are you free next Tuesday at 10am?
+                                            Hola {selectedThread.leadName}, ¡gracias por responder! Me encantaría mostrarte cómo podemos automatizar tus secuencias de movimiento. ¿Estás libre el próximo martes a las 10am?
                                         </p>
                                     </div>
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mr-1">Read 1h ago</span>
+                                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mr-1">Leído hace 1h</span>
                                 </div>
                             </div>
                         </div>
@@ -183,16 +183,16 @@ export default function InboxPage() {
                                 <textarea
                                     value={reply}
                                     onChange={(e) => setReply(e.target.value)}
-                                    placeholder={`Reply to ${selectedThread.leadName}...`}
+                                    placeholder={`Responder a ${selectedThread.leadName}...`}
                                     className="w-full bg-transparent p-6 outline-none text-sm font-medium italic min-h-[120px] resize-none"
                                 />
                                 <div className="flex items-center justify-between p-4 px-6 border-t border-slate-100/50">
                                     <div className="flex gap-4">
                                         <button className="text-slate-400 hover:text-primary transition-colors"><FaceSmileIcon className="w-5 h-5" /></button>
-                                        <button className="text-slate-400 hover:text-primary transition-colors font-black text-[10px] uppercase tracking-widest">Personalize with AI</button>
+                                        <button className="text-slate-400 hover:text-primary transition-colors font-black text-[10px] uppercase tracking-widest">Personalizar con IA</button>
                                     </div>
                                     <button className="bg-primary text-white px-8 py-3 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
-                                        SEND REPLY <PaperAirplaneIcon className="w-4 h-4" />
+                                        ENVIAR RESPUESTA <PaperAirplaneIcon className="w-4 h-4" />
                                     </button>
                                 </div>
                             </div>
@@ -203,8 +203,8 @@ export default function InboxPage() {
                         <div className="w-24 h-24 bg-slate-50 rounded-[40px] flex items-center justify-center text-slate-200 mb-8">
                             <EnvelopeIcon className="w-12 h-12" />
                         </div>
-                        <h3 className="text-3xl font-black text-slate-300 italic tracking-tight">Select a conversation to start moving</h3>
-                        <p className="text-slate-400 font-medium mt-2">All your multi-channel leads in one unified view.</p>
+                        <h3 className="text-3xl font-black text-slate-300 italic tracking-tight">Selecciona una conversación para comenzar</h3>
+                        <p className="text-slate-400 font-medium mt-2">Todos tus leads multicanal en una vista unificada.</p>
                     </div>
                 )}
             </div>
@@ -212,12 +212,12 @@ export default function InboxPage() {
             {/* Profile Context Side (Optional but recommended for SaaS) */}
             <div className="w-1/4 border-l border-slate-100 bg-white p-8 space-y-10 overflow-y-auto">
                 <div>
-                    <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 border-b border-slate-50 pb-2">Timeline</h3>
+                    <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 border-b border-slate-50 pb-2">Línea de Tiempo</h3>
                     <div className="space-y-6">
                         {[
-                            { icon: ClockIcon, text: 'Sequence started', time: '3 days ago' },
-                            { icon: EnvelopeIcon, text: 'Email sent', time: '2 days ago' },
-                            { icon: ArrowUpRightIcon, text: 'Clicked link in email', time: '1 day ago' },
+                            { icon: ClockIcon, text: 'Secuencia iniciada', time: 'hace 3 días' },
+                            { icon: EnvelopeIcon, text: 'Email enviado', time: 'hace 2 días' },
+                            { icon: ArrowUpRightIcon, text: 'Clic en enlace del email', time: 'hace 1 día' },
                         ].map((item, i) => (
                             <div key={i} className="flex gap-4 relative">
                                 {i < 2 && <div className="absolute left-[13px] top-8 w-0.5 h-6 bg-slate-100" />}
@@ -234,12 +234,12 @@ export default function InboxPage() {
                 </div>
 
                 <div>
-                    <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 border-b border-slate-50 pb-2">Intelligence</h3>
+                    <h3 className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 border-b border-slate-50 pb-2">Inteligencia</h3>
                     <div className="p-6 bg-indigo-50/50 rounded-2xl border border-indigo-100/50">
-                        <p className="text-[10px] font-black text-primary uppercase tracking-widest mb-2">Lead Intent Score</p>
+                        <p className="text-[10px] font-black text-primary uppercase tracking-widest mb-2">Puntuación de Intención</p>
                         <div className="flex items-end gap-2">
                             <span className="text-4xl font-black text-primary italic leading-none">88/100</span>
-                            <span className="text-xs font-bold text-indigo-400 mb-1">HIGH INTENT</span>
+                            <span className="text-xs font-bold text-indigo-400 mb-1">ALTA INTENCIÓN</span>
                         </div>
                     </div>
                 </div>

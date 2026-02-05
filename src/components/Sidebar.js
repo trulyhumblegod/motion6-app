@@ -11,13 +11,13 @@ import {
 } from '@heroicons/react/24/outline';
 
 const navItems = [
-  { name: 'Dashboard', href: '/', icon: Squares2X2Icon },
-  { name: 'Campaigns', href: '/campaigns', icon: PaperAirplaneIcon },
-  { name: 'Inbox', href: '/inbox', icon: InboxStackIcon, badge: '3' },
-  { name: 'Prospecting', href: '/leads', icon: MagnifyingGlassIcon },
-  { name: 'AI Lab', href: '/enrichment', icon: SparklesIcon },
-  { name: 'Analytics', href: '/analytics', icon: ChartBarIcon },
-  { name: 'Settings', href: '/settings', icon: Cog6ToothIcon },
+  { name: 'Inicio', href: '/', icon: Squares2X2Icon },
+  { name: 'Campañas', href: '/campaigns', icon: PaperAirplaneIcon },
+  { name: 'Bandeja', href: '/inbox', icon: InboxStackIcon, badge: '3' },
+  { name: 'Prospectos', href: '/leads', icon: MagnifyingGlassIcon },
+  { name: 'Laboratorio IA', href: '/enrichment', icon: SparklesIcon },
+  { name: 'Analítica', href: '/analytics', icon: ChartBarIcon },
+  { name: 'Ajustes', href: '/settings', icon: Cog6ToothIcon },
 ];
 
 export default function Sidebar() {

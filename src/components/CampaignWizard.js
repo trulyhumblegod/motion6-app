@@ -77,9 +77,9 @@ export default function CampaignWizard({ onClose }) {
                             <RocketLaunchIcon className="w-7 h-7" />
                         </div>
                         <div>
-                            <h2 className="text-2xl font-black text-slate-900 tracking-tighter italic">Motion Wizard</h2>
+                            <h2 className="text-2xl font-black text-slate-900 tracking-tighter italic">Asistente de Campaña</h2>
                             <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mt-1">
-                                Step {step} of 5 • {step === 1 ? 'Selection' : step === 2 ? 'Configuration' : step === 3 ? 'Leads' : step === 4 ? 'Sequence' : 'Launch'}
+                                Paso {step} de 5 • {step === 1 ? 'Selección' : step === 2 ? 'Configuración' : step === 3 ? 'Prospectos' : step === 4 ? 'Secuencia' : 'Lanzamiento'}
                             </p>
                         </div>
                     </div>
@@ -102,11 +102,11 @@ export default function CampaignWizard({ onClose }) {
                                     <SparklesIcon className="w-10 h-10 text-primary" />
                                 </div>
                                 <div>
-                                    <h3 className="text-2xl font-black text-slate-900 mb-2 italic tracking-tight">AI Sequence Generator</h3>
-                                    <p className="text-slate-500 font-medium leading-relaxed">Let Motion6 AI build your multi-channel sequence, write copy, and identify hooks in seconds.</p>
+                                    <h3 className="text-2xl font-black text-slate-900 mb-2 italic tracking-tight">Generador con IA</h3>
+                                    <p className="text-slate-500 font-medium leading-relaxed">Deja que la IA construya tu secuencia multicanal, redacte el contenido e identifique ganchos en segundos.</p>
                                 </div>
                                 <div className="inline-flex items-center gap-2 text-primary font-black text-sm uppercase tracking-widest">
-                                    Most Popular <ArrowRightIcon className="w-4 h-4" />
+                                    Más Popular <ArrowRightIcon className="w-4 h-4" />
                                 </div>
                             </button>
 
@@ -118,11 +118,11 @@ export default function CampaignWizard({ onClose }) {
                                     <PencilSquareIcon className="w-10 h-10 text-slate-400" />
                                 </div>
                                 <div>
-                                    <h3 className="text-2xl font-black text-slate-900 mb-2 italic tracking-tight">Build from Scratch</h3>
-                                    <p className="text-slate-500 font-medium leading-relaxed">Full control. Define your steps, write your own templates, and set custom wait intervals.</p>
+                                    <h3 className="text-2xl font-black text-slate-900 mb-2 italic tracking-tight">Crear desde Cero</h3>
+                                    <p className="text-slate-500 font-medium leading-relaxed">Control total. Define tus pasos, escribe tus propias plantillas y configura intervalos de espera.</p>
                                 </div>
                                 <div className="inline-flex items-center gap-2 text-slate-400 font-black text-sm uppercase tracking-widest">
-                                    Power Users <ArrowRightIcon className="w-4 h-4" />
+                                    Usuario Avanzado <ArrowRightIcon className="w-4 h-4" />
                                 </div>
                             </button>
                         </div>
@@ -135,41 +135,41 @@ export default function CampaignWizard({ onClose }) {
                                 <>
                                     <div className="space-y-6">
                                         <div>
-                                            <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-3">What are you selling?</label>
+                                            <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-3">¿Qué estás vendiendo?</label>
                                             <input
                                                 autoFocus
                                                 type="text"
                                                 value={campaignData.product}
                                                 onChange={(e) => setCampaignData({ ...campaignData, product: e.target.value })}
-                                                placeholder="e.g. AI-powered CRM automation"
+                                                placeholder="ej. Automatización CRM con IA"
                                                 className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl font-bold text-slate-900 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-3">Who is your target audience?</label>
+                                            <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-3">¿Quién es tu público objetivo?</label>
                                             <input
                                                 type="text"
                                                 value={campaignData.audience}
                                                 onChange={(e) => setCampaignData({ ...campaignData, audience: e.target.value })}
-                                                placeholder="e.g. SaaS Founders at series A"
+                                                placeholder="ej. Fundadores SaaS serie A"
                                                 className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl font-bold text-slate-900 focus:ring-2 focus:ring-primary/20 outline-none transition-all"
                                             />
                                         </div>
                                         <div className="grid grid-cols-2 gap-6">
                                             <div>
-                                                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-3">Primary Goal</label>
+                                                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-3">Objetivo Principal</label>
                                                 <select className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl font-bold text-slate-900 outline-none">
-                                                    <option value="demo">Book Demo</option>
-                                                    <option value="reply">Get Reply</option>
-                                                    <option value="connection">LinkedIn Network</option>
+                                                    <option value="demo">Agendar Demo</option>
+                                                    <option value="reply">Obtener Respuesta</option>
+                                                    <option value="connection">Red LinkedIn</option>
                                                 </select>
                                             </div>
                                             <div>
-                                                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-3">Tone of Voice</label>
+                                                <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-3">Tono de Voz</label>
                                                 <select className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl font-bold text-slate-900 outline-none">
-                                                    <option value="professional">Professional</option>
-                                                    <option value="friendly">Warm & Friendly</option>
-                                                    <option value="bold">Direct & Bold</option>
+                                                    <option value="professional">Profesional</option>
+                                                    <option value="friendly">Cálido y Amigable</option>
+                                                    <option value="bold">Directo y Audaz</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -180,19 +180,19 @@ export default function CampaignWizard({ onClose }) {
                                         className="w-full py-5 bg-gradient-to-r from-primary to-indigo-600 text-white rounded-[24px] font-black text-lg shadow-xl shadow-primary/20 flex items-center justify-center gap-3 transition-all active:scale-95 disabled:opacity-50"
                                     >
                                         {isGenerating ? <BoltIcon className="w-6 h-6 animate-pulse" /> : <SparklesIcon className="w-6 h-6" />}
-                                        {isGenerating ? 'AI IS CONSTRUCTING YOUR MOTION...' : 'GENERATE AI SEQUENCE'}
+                                        {isGenerating ? 'LA IA ESTÁ CONSTRUYENDO TU CAMPAÑA...' : 'GENERAR SECUENCIA IA'}
                                     </button>
                                 </>
                             ) : (
                                 <div className="space-y-6">
                                     <div>
-                                        <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-3">Campaign Nickname</label>
+                                        <label className="block text-xs font-black text-slate-400 uppercase tracking-widest mb-3">Nombre de Campaña</label>
                                         <input
                                             autoFocus
                                             type="text"
                                             value={campaignData.name}
                                             onChange={(e) => setCampaignData({ ...campaignData, name: e.target.value })}
-                                            placeholder="e.g. Sales Dev - High Fidelity Only"
+                                            placeholder="ej. Desarrollo Ventas - Solo Alta Fidelidad"
                                             className="w-full px-6 py-4 bg-slate-50 border border-slate-100 rounded-2xl font-bold text-slate-900 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-xl"
                                         />
                                     </div>
@@ -200,7 +200,7 @@ export default function CampaignWizard({ onClose }) {
                                         onClick={nextStep}
                                         className="w-full py-5 bg-slate-900 text-white rounded-[24px] font-black text-lg shadow-xl flex items-center justify-center gap-3 transition-all active:scale-95"
                                     >
-                                        CONTINUE TO LEADS
+                                        CONTINUAR A PROSPECTOS
                                         <ArrowRightIcon className="w-5 h-5" />
                                     </button>
                                 </div>
@@ -212,8 +212,8 @@ export default function CampaignWizard({ onClose }) {
                     {step === 3 && (
                         <div className="space-y-10 max-w-3xl mx-auto">
                             <div className="text-center space-y-2">
-                                <h3 className="text-3xl font-black text-slate-900 italic tracking-tight">Who are we contacting?</h3>
-                                <p className="text-slate-500 font-medium">Import your leads from CSV, Apollo, or just paste them below.</p>
+                                <h3 className="text-3xl font-black text-slate-900 italic tracking-tight">¿A quién estamos contactando?</h3>
+                                <p className="text-slate-500 font-medium">Importa tus prospectos desde CSV, Apollo o pégalos abajo.</p>
                             </div>
 
                             <div className="grid grid-cols-3 gap-4">
@@ -221,26 +221,26 @@ export default function CampaignWizard({ onClose }) {
                                     <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-slate-400 group-hover:text-primary">
                                         <DocumentArrowUpIcon className="w-6 h-6" />
                                     </div>
-                                    <span className="text-[10px] font-black uppercase tracking-widest">Upload CSV</span>
+                                    <span className="text-[10px] font-black uppercase tracking-widest">Subir CSV</span>
                                 </button>
                                 <button className="flex flex-col items-center gap-4 p-6 bg-slate-50 rounded-3xl border border-slate-100 hover:bg-white hover:border-indigo-500/30 transition-all group">
                                     <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-slate-400 group-hover:text-indigo-500">
                                         <MagnifyingGlassIcon className="w-6 h-6" />
                                     </div>
-                                    <span className="text-[10px] font-black uppercase tracking-widest">Apollo Finder</span>
+                                    <span className="text-[10px] font-black uppercase tracking-widest">Buscador Apollo</span>
                                 </button>
                                 <button className="flex flex-col items-center gap-4 p-6 bg-primary/5 rounded-3xl border-2 border-primary/20 transition-all">
                                     <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center text-primary">
                                         <TableCellsIcon className="w-6 h-6" />
                                     </div>
-                                    <span className="text-[10px] font-black uppercase tracking-widest">Direct Paste</span>
+                                    <span className="text-[10px] font-black uppercase tracking-widest">Pegar Directo</span>
                                 </button>
                             </div>
 
                             <textarea
                                 rows={6}
                                 className="w-full p-6 bg-slate-50 border border-slate-100 rounded-[32px] font-bold text-slate-900 focus:ring-2 focus:ring-primary/20 outline-none resize-none placeholder:text-slate-300"
-                                placeholder="Paste emails here (one per line)..."
+                                placeholder="Pega emails aquí (uno por línea)..."
                                 onChange={(e) => {
                                     const emails = e.target.value.split('\n').filter(e => e.includes('@'));
                                     setCampaignData({ ...campaignData, leads: emails.map(m => ({ email: m })) });
@@ -249,13 +249,13 @@ export default function CampaignWizard({ onClose }) {
 
                             <div className="flex justify-between items-center bg-slate-50 p-6 rounded-[24px]">
                                 <div className="text-sm font-bold text-slate-500">
-                                    <span className="text-primary">{campaignData.leads.length}</span> leads detected
+                                    <span className="text-primary">{campaignData.leads.length}</span> prospectos detectados
                                 </div>
                                 <button
                                     onClick={nextStep}
                                     className="px-8 py-3 bg-primary text-white rounded-xl font-black text-sm flex items-center gap-2 hover:shadow-lg transition-all"
                                 >
-                                    DESIGN SEQUENCE <ArrowRightIcon className="w-4 h-4" />
+                                    DISEÑAR SECUENCIA <ArrowRightIcon className="w-4 h-4" />
                                 </button>
                             </div>
                         </div>
@@ -265,8 +265,8 @@ export default function CampaignWizard({ onClose }) {
                     {step === 4 && (
                         <div className="space-y-8">
                             <div className="text-center space-y-2">
-                                <h3 className="text-3xl font-black text-slate-900 italic tracking-tight">Outreach Sequence</h3>
-                                <p className="text-slate-500 font-medium">Design the path for your leads. Motion6 automates the rest.</p>
+                                <h3 className="text-3xl font-black text-slate-900 italic tracking-tight">Secuencia de Contacto</h3>
+                                <p className="text-slate-500 font-medium">Diseña el camino para tus prospectos. Motion6 automatiza el resto.</p>
                             </div>
                             <SequenceDesigner
                                 sequence={campaignData.sequence}
@@ -278,7 +278,7 @@ export default function CampaignWizard({ onClose }) {
                                     disabled={campaignData.sequence.length === 0}
                                     className="px-12 py-5 bg-slate-900 text-white rounded-[24px] font-black text-xl flex items-center gap-4 hover:shadow-2xl transition-all disabled:opacity-20 active:scale-95"
                                 >
-                                    GO TO LAUNCH 🚀
+                                    IR AL LANZAMIENTO 🚀
                                 </button>
                             </div>
                         </div>
@@ -296,23 +296,23 @@ export default function CampaignWizard({ onClose }) {
                                                 <RocketLaunchIcon className="w-6 h-6 text-white" />
                                             </div>
                                             <div>
-                                                <h3 className="text-2xl font-black italic tracking-tight">Vitals Check</h3>
-                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mt-1">Ready for deployment</p>
+                                                <h3 className="text-2xl font-black italic tracking-tight">Chequeo Vital</h3>
+                                                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mt-1">Listo para despliegue</p>
                                             </div>
                                         </div>
 
                                         <div className="space-y-4">
                                             <div className="flex justify-between items-center py-3 border-b border-white/5">
-                                                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Campaign</span>
+                                                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Campaña</span>
                                                 <span className="font-black italic text-primary">{campaignData.name || 'Velocity Alpha'}</span>
                                             </div>
                                             <div className="flex justify-between items-center py-3 border-b border-white/5">
-                                                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Prospects</span>
+                                                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Total Prospectos</span>
                                                 <span className="font-black">{campaignData.leads.length} Leads</span>
                                             </div>
                                             <div className="flex justify-between items-center py-3">
-                                                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Sequence Depth</span>
-                                                <span className="font-black text-emerald-400">{campaignData.sequence.length} Steps</span>
+                                                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Profundidad Secuencia</span>
+                                                <span className="font-black text-emerald-400">{campaignData.sequence.length} Pasos</span>
                                             </div>
                                         </div>
                                     </div>
@@ -321,15 +321,15 @@ export default function CampaignWizard({ onClose }) {
                                     <div className="bg-white border-2 border-slate-100 rounded-[32px] p-8 space-y-6">
                                         <div className="flex items-center justify-between">
                                             <div>
-                                                <h4 className="text-lg font-black text-slate-900 italic tracking-tight">Rhythm of Motion</h4>
-                                                <p className="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">Sending Limits</p>
+                                                <h4 className="text-lg font-black text-slate-900 italic tracking-tight">Ritmo de Envío</h4>
+                                                <p className="text-xs font-bold text-slate-400 mt-1 uppercase tracking-widest">Límite de Envíos</p>
                                             </div>
-                                            <span className="px-3 py-1 bg-primary/5 text-primary text-[10px] font-black uppercase tracking-widest rounded-lg">Optimized</span>
+                                            <span className="px-3 py-1 bg-primary/5 text-primary text-[10px] font-black uppercase tracking-widest rounded-lg">Optimizado</span>
                                         </div>
                                         <div className="space-y-4">
                                             <div className="flex justify-between text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                                <span>Linear Sending</span>
-                                                <span>50 / Day</span>
+                                                <span>Envío Lineal</span>
+                                                <span>50 / Día</span>
                                             </div>
                                             <input
                                                 type="range"
@@ -338,7 +338,7 @@ export default function CampaignWizard({ onClose }) {
                                                 max="200"
                                                 defaultValue="50"
                                             />
-                                            <p className="text-[10px] text-slate-400 font-medium italic">We recommend starting slow to warm up your IP.</p>
+                                            <p className="text-[10px] text-slate-400 font-medium italic">Recomendamos empezar lento para calentar tu IP.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -346,8 +346,8 @@ export default function CampaignWizard({ onClose }) {
                                 {/* Right Side: Lead Preview */}
                                 <div className="bg-slate-50 border-2 border-slate-100 rounded-[32px] overflow-hidden flex flex-col">
                                     <div className="p-6 border-b border-slate-100 bg-white flex items-center justify-between">
-                                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Lead List Preview</span>
-                                        <span className="text-[10px] font-black text-primary uppercase tracking-widest">Verified</span>
+                                        <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Vista Previa Prospectos</span>
+                                        <span className="text-[10px] font-black text-primary uppercase tracking-widest">Verificado</span>
                                     </div>
                                     <div className="flex-1 overflow-y-auto p-4 space-y-3">
                                         {campaignData.leads.map((l, i) => (
@@ -358,14 +358,14 @@ export default function CampaignWizard({ onClose }) {
                                                     </div>
                                                     <div>
                                                         <p className="text-xs font-black text-slate-900 italic">{l.email}</p>
-                                                        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Awaiting First Motion</p>
+                                                        <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Esperando Inicio</p>
                                                     </div>
                                                 </div>
                                                 <div className="w-2 h-2 bg-emerald-400 rounded-full shadow-lg shadow-emerald-400/20" />
                                             </div>
                                         ))}
                                         {campaignData.leads.length === 0 && (
-                                            <div className="py-20 text-center text-slate-300 italic font-medium">No leads selected</div>
+                                            <div className="py-20 text-center text-slate-300 italic font-medium">Sin prospectos seleccionados</div>
                                         )}
                                     </div>
                                 </div>
@@ -375,7 +375,7 @@ export default function CampaignWizard({ onClose }) {
                                 onClick={handleCreate}
                                 className="w-full py-6 bg-primary text-white rounded-[32px] font-black text-2xl hover:shadow-2xl hover:shadow-primary/30 transition-all active:scale-95 flex items-center justify-center gap-4"
                             >
-                                IGNITE MOTION <RocketLaunchIcon className="w-8 h-8" />
+                                INICIAR CAMPAÑA <RocketLaunchIcon className="w-8 h-8" />
                             </button>
                         </div>
                     )}
@@ -389,7 +389,7 @@ export default function CampaignWizard({ onClose }) {
                             onClick={prevStep}
                             className="flex items-center gap-2 text-slate-400 font-black text-xs uppercase tracking-widest hover:text-slate-900 transition-all"
                         >
-                            <ArrowLeftIcon className="w-4 h-4" /> Back
+                            <ArrowLeftIcon className="w-4 h-4" /> Atrás
                         </button>
                         <div className="flex gap-2">
                             {[1, 2, 3, 4, 5].map(i => (
